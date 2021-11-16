@@ -1,66 +1,82 @@
 import java.util.*;
 
-public class Admin extends User {
+public class Main {
 
-	public Admin(String firstName, String lastName, String email) {
-		super(firstName, lastName, email);
-		super.isAdmin = true;
-	}
+	static ArrayList<Movie> movieList = new ArrayList<Movie>();
 	
-	static int adminCode = 12345;
-	
-    static ArrayList<Movie> movies = new ArrayList<Movie>();
-    static HashMap<String, Integer> ticketsLeft = new HashMap<String, Integer>();
-
-    static int ticketsSold = 0;
-    static double moneyCollected = 0.0;
-    
-    public void setAdminCode(int code) {
-		adminCode = code;
-	}
-    
-	public static void addMovie(String name, int numTickets, double price) {
-		movies.add(new Movie(name, numTickets, price));
-	}
-	
-	public static void removeMovie(Movie movie) {
-		movies.remove(movie);
-	}
-	
-	public static void addTimeLocation(Movie movie, String time, String location) {
-		movie.timeLocation.put(time, location);
-		ticketsLeft.put(movie.getName()+time+location, 99);
-	}
-	
-	public void updatePrice(Movie movie, int newPrice){
-		movie.price = Math.round(newPrice*100.0)/100.0;;
-    }
-    
-    public void discountPrice(Movie movie, int percentOff) {
-    	movie.price *= 1 - (percentOff/100.);
-    	
-    	movie.price = Math.round(movie.price*100.0)/100.0;
-    }
-    
-
-    public static void printTotals() {
-    	System.out.println("Tickets sold: " + ticketsSold);
-    	System.out.println("Money collected: " + moneyCollected);
-    }
-    
-	public static void main() {
+	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		addMovie("Dune",100,15);
-		addMovie("Martian",100,15);
-		addMovie("Avengers",1000,15);
+		Admin.main();
+			
+			int choice1;
+			int choice2;
+			String[] times;
+			Scanner input = new Scanner(System.in);
+			
+			System.out.println("Movies in Theater Now:");
+			System.out.println();
+			
+			for(int i = 0; i < Admin.movies.size(); i++) {
+				System.out.println(
+						"////////////////////////////////////// \n//\t" +
+				(i+1) + " - " + Admin.movies.get(i).getName());
+			}
+			
+			System.out.println("\nPick a movie by entering the corresponding number.\nEnter 0 at any point to quit:\n"
+						+ "------------------------------------- PassCode - Admin Options");
+			
+			while(true) {
+				
+				try {
+					choice1 = Integer.parseInt(input.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Input was incorrect, please try again");
+					continue;
+				}
+				
+				System.out.println();
+				
+				if (Admin.adminCode == choice1) {
+					System.out.println("-----------------Admin Options-----------------");
+					System.out.println("1. Add Movies");
+					System.out.println("2. Remove Movies");
+					System.out.println("3. Change price");
+					System.out.println("4. Change Time/Location");
+				}else if(choice1 < Admin.movies.size()+1) {
+					times = Admin.movies.get(choice1 - 1).printTimeAndLocation();
+					break;
+				}else {
+					System.out.println("Input was incorrect, please try again");
+					continue;
+				}
+			}
+			
+			System.out.println("\nPick the time and location for " + Admin.movies.get(choice1 - 1).getName() + ":");
+			
+			while(true) {
+				
+				try {
+					choice2 = Integer.parseInt(input.nextLine());
+				} catch (NumberFormatException e) {
+					System.out.println("Input was incorrect, please try again");
+					continue;
+				}
+				
+				System.out.println();
+				
+				if(choice2 < times.length+1) {
+					System.out.println("Seats available for " + Admin.movies.get(choice1 - 1).getName() + " at " + 
+					times[choice2-1] + " in " + Admin.movies.get(choice1 - 1).timeLocation.get(times[choice2-1]));
+					//just an example implemented later
+					Theatre.main(null);;
+					break;
+				}else {
+					System.out.println("Input was incorrect, please try again");
+					continue;
+				}
+			}
+		input.close();
 		
-		addTimeLocation(movies.get(0),"11AM-12PM","AMC43");
-		addTimeLocation(movies.get(0),"12PM-2PM","AMC44");
-		
-		addTimeLocation(movies.get(1),"1AM-2PM","AMC46");
-		addTimeLocation(movies.get(1),"2PM-4PM","AMC42");
-		
-		addTimeLocation(movies.get(2),"12AM-2aM","AMC48");
-		addTimeLocation(movies.get(2),"2PM-4PM","AMC43");
 	}
+
 }
