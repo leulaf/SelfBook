@@ -40,7 +40,7 @@ public class Main {
 					System.out.println("2. Remove Movies");
 					System.out.println("3. Change price");
 					System.out.println("4. Change Time/Location");
-				}else if(choice1 < Admin.movies.size()) {
+				}else if(choice1 < Admin.movies.size()+1) {
 					Admin.movies.get(choice1 - 1).printTimeAndLocation();
 					break;
 				}else {
