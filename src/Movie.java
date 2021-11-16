@@ -34,12 +34,18 @@ public class Movie {
         }
     }
     
-    public void printTimeAndLocation(){
-        System.out.println("Show times for " + this.name + ":");
+    public String[] printTimeAndLocation(){
+        String[] allTimes = new String[timeLocation.size()];
+        int track = 0;
+    	System.out.println("Show times for " + this.name + ":");
         
         for (Map.Entry<String, String> entry : timeLocation.entrySet()) {
-            System.out.println("At " + entry.getKey() + " in " + entry.getValue()) ;
+            System.out.println((track+1) + " - At " + entry.getKey() + " in " + entry.getValue()) ;
+            allTimes[track] = entry.getKey();
+            track++;
         }
+        
+        return allTimes;
     }
    
     
