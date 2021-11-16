@@ -20,5 +20,3 @@ public class Ticket {
 		System.out.println("\tThank You! We hope you enjoy the movie!\n\n");
 	}
 } 
-	
-	
