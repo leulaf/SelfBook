@@ -51,8 +51,8 @@ public class Admin extends User {
 	public static void main() {
 		// TODO Auto-generated method stub
 		addMovie("Dune",100,15);
-		addMovie("Dune 2",100,15);
-		addMovie("Dune 3",1000,15);
+		addMovie("Martian",100,15);
+		addMovie("Avengers",1000,15);
 		
 		addTimeLocation(movies.get(0),"11AM-12PM","AMC43");
 		addTimeLocation(movies.get(0),"12PM-2PM","AMC44");
