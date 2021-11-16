@@ -2,17 +2,13 @@
 ticket such as the name of the movie, the time, the date, theatre number and seat number. */
 import java.util.*;
 public class Ticket {
-	
-	//This is the theatre number
-	theatreNumber t = new theatreNumber();
 
 	//This function will print out the ticket details
-	void print_ticket(String movie,String showtime,int theatreNumber, String row, int col)
+	void print_ticket(String movie,String showtime,int theatreNumber, String row, int col, double cost)
 	{
 		//This will show the date that the ticket is valid for
 		Date date = new Date();
 		//This would get the cost of the movie
-		int cost = t.getcost(movie);
 		System.out.println("========================SelfBook Cinemas=======================");
 		System.out.println("\t\t      ----Ticket----");
 		System.out.println("\tMovie: "+movie+"\t");
