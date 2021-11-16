@@ -1,3 +1,4 @@
+import java.util.Scanner;
 
 public class Theatre {
 	
@@ -20,7 +21,16 @@ public class Theatre {
 		}
 		
 	}
-	
+
+	private int indexOf(int row) {
+		for (int i = 0; i < ROWS; i++) {
+			if (Seat.ROW_HASH[i] == row) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	public String toString() {
 		String s = "Theatre: " + this.theatreNumber + "\n";
 //		s += "Movie: " + this.movie + "\n";
@@ -53,8 +63,30 @@ public class Theatre {
 	}
 	
 	public static void main(String[] args) {
+		// TODO: validate the inputs
+		Scanner inputObj = new Scanner(System.in);
 		Theatre t = new Theatre(1);
 		t.displaySeats();
+		
+		while (true) {
+			// get the row desired
+			System.out.println("Please select a row: ");
+			char row = inputObj.next().charAt(0);
+			
+			// get the col desired
+			System.out.println("Please select a column: ");
+			int col = inputObj.nextInt();
+		}
+		int index = t.indexOf(row);
+		if (index != -1) {
+			Seat seatSelected = t.allSeats[index][col];
+			int status = seatSelected.getStatus();
+			if (status != Seat.OPEN) {
+				System.out.println("This seat is taken, please select another one!");
+			}
+		}
+		
+		inputObj.close();
 	}
 
 }
