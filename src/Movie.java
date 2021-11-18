@@ -4,11 +4,13 @@ import java.util.*;
 public class Movie {
     String name;
     double price;
+    int tickets;
     HashMap<String, String> timeLocation = new HashMap<String, String>();
     
     public Movie (String name, int tickets, double price){
         this.name = name;
         this.price = price;
+        this.tickets = tickets;
     }
 
     public String getName(){
@@ -55,11 +57,6 @@ public class Movie {
 	
     public double getPrice(){
         return this.price;
-    }
-
-    public static void main(String[] args){
-
-        
     }
 
 }
