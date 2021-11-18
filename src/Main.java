@@ -190,7 +190,7 @@ public class Main {
 						System.out.println("----------------------------------------------");
 						System.out.println("-- Amount of money collected: " + Admin.moneyCollected);
 						System.out.println("----------------------------------------------");
-
+						main(null);
 					}else if(adminChoice == 5) {
 						int changed;
 						while(true) {	
