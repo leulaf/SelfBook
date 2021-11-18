@@ -4,7 +4,7 @@ public class Seat {
 	private char row;
 	private int col; 
 	private int status; 
-	
+		
 	public static final int A = 0;
 	public static final int B = 1; 
 	public static final int C = 2; 
@@ -20,7 +20,7 @@ public class Seat {
 	public static final int OPEN = 0;
 	public static final int ON_HOLD = 1;
 	public static final int TAKEN = 2; 
-	
+
 	public Seat(int row, int col) {
 		this.row = ROW_HASH[row];
 		this.col = col;
