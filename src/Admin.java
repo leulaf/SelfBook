@@ -1,7 +1,9 @@
 import java.util.*;
 
 public class Admin extends User {
-
+	static Movie Ex1;
+	static Movie Ex2;
+	static Movie Ex3;
 	public Admin(String firstName, String lastName, String email) {
 		super(firstName, lastName, email);
 		super.isAdmin = true;
@@ -47,20 +49,24 @@ public class Admin extends User {
     	System.out.println("Tickets sold: " + ticketsSold);
     	System.out.println("Money collected: " + moneyCollected);
     }
-    
+	static boolean ranOnce = false;
+
 	public static void main() {
 		// TODO Auto-generated method stub
-		addMovie("Dune",100,15);
-		addMovie("Martian",100,15);
-		addMovie("Avengers",1000,15);
-		
-		addTimeLocation(movies.get(0),"11AM-12PM","AMC43");
-		addTimeLocation(movies.get(0),"12PM-2PM","AMC44");
-		
-		addTimeLocation(movies.get(1),"1AM-2PM","AMC46");
-		addTimeLocation(movies.get(1),"2PM-4PM","AMC42");
-		
-		addTimeLocation(movies.get(2),"12AM-2aM","AMC48");
-		addTimeLocation(movies.get(2),"2PM-4PM","AMC43");
+		if (!ranOnce) {
+			Ex1 = addMovie("Dune",100,15);
+			Ex2 = addMovie("Martian",100,15);
+			Ex3 = addMovie("Avengers",1000,15);
+			
+			addTimeLocation(movies.get(0),"11AM-12PM","AMC43");
+			addTimeLocation(movies.get(0),"12PM-2PM","AMC44");
+			
+			addTimeLocation(movies.get(1),"1AM-2PM","AMC46");
+			addTimeLocation(movies.get(1),"2PM-4PM","AMC42");
+			
+			addTimeLocation(movies.get(2),"12AM-2aM","AMC48");
+			addTimeLocation(movies.get(2),"2PM-4PM","AMC43");
+			ranOnce = true;
+		}
 	}
 }
