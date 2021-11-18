@@ -7,8 +7,8 @@ public class Main {
 	
 	//remove later
 	static boolean ranOnce = false;
-
-	//remove Admin.movies.clear(); statement later
+	
+	//remove Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3); statement later
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
@@ -41,7 +41,7 @@ public class Main {
 				
 				System.out.println();
 				if(movieChoice == 0){
-					Admin.movies.clear();
+					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 					
 					main(null);
 				} else if (Admin.adminCode == movieChoice) {
@@ -66,7 +66,7 @@ public class Main {
 						break;
 					}
 					if(adminChoice == 0) {
-						Admin.movies.clear();
+						Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 						main(null);
 					}else if(adminChoice == 1) {
 						int numTickets;
@@ -129,17 +129,22 @@ public class Main {
 						main(null);
 					}else if(adminChoice == 2) {
 						int removed;
-						for(int i = 0; i < Admin.movies.size(); i++) {
-							System.out.println(
-									"////////////////////////////////////// \n//\t" +
-							(i+1) + " - " + Admin.movies.get(i).getName());
-						}
+						
 						
 						while(true){
+							for(int i = 0; i < Admin.movies.size(); i++) {
+								System.out.println(
+										"////////////////////////////////////// \n//\t" +
+								(i+1) + " - " + Admin.movies.get(i).getName());
+							}
 							System.out.println("Enter the corresponding number for the movie you want to remove:");
 							try {
 								removed = Integer.parseInt(input.nextLine());
 							} catch (NumberFormatException e) {
+								System.out.println("Input was incorrect, please try again");
+								continue;
+							}
+							if(removed > Admin.movies.size() || removed <= 0) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
 							}
@@ -191,6 +196,7 @@ public class Main {
 						System.out.println("-- Amount of money collected: " + Admin.moneyCollected);
 						System.out.println("----------------------------------------------");
 						main(null);
+
 					}else if(adminChoice == 5) {
 						int changed;
 						while(true) {	
@@ -236,13 +242,13 @@ public class Main {
 				System.out.println();
 				
 				if(timeChoice == 0){
-					Admin.movies.clear();
+					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 					main(null);
 				}else if(timeChoice > 0 && timeChoice < times.length+1) {
 					System.out.println("Seats available for " + Admin.movies.get(movieChoice - 1).getName() + " at " + 
 					times[timeChoice-1] + " in " + Admin.movies.get(movieChoice - 1).timeLocation.get(times[timeChoice-1]));
 					//just an example implemented later
-					Theatre.main(null);;
+					//Theatre.main(null);;
 					break;
 				}else {
 					System.out.println("Input was incorrect, please try again");
