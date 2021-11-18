@@ -10,17 +10,18 @@ public class Admin extends User {
 	static int adminCode = 12345;
 	
     static ArrayList<Movie> movies = new ArrayList<Movie>();
-    static HashMap<String, Integer> ticketsLeft = new HashMap<String, Integer>();
 
     static int ticketsSold = 0;
     static double moneyCollected = 0.0;
     
-    public void setAdminCode(int code) {
+    public static void setAdminCode(int code) {
 		adminCode = code;
 	}
     
-	public static void addMovie(String name, int numTickets, double price) {
-		movies.add(new Movie(name, numTickets, price));
+	public static Movie addMovie(String name, int numTickets, double price) {
+		Movie movie = new Movie(name, numTickets, price);
+		movies.add(movie);
+		return movie;
 	}
 	
 	public static void removeMovie(Movie movie) {
@@ -29,10 +30,9 @@ public class Admin extends User {
 	
 	public static void addTimeLocation(Movie movie, String time, String location) {
 		movie.timeLocation.put(time, location);
-		ticketsLeft.put(movie.getName()+time+location, 99);
 	}
 	
-	public void updatePrice(Movie movie, int newPrice){
+	public static void updatePrice(Movie movie, Double newPrice){
 		movie.price = Math.round(newPrice*100.0)/100.0;;
     }
     
