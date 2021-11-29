@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,10 +62,85 @@ public class Time {
         // and the object passed 
 
         // as long as the date and month are the same, we can set constraints 
-        // Date date = new GregorianCalendar(2014, Calendar.FEBRUARY, 11).getTime();
+        // we need to parse this into a 24 hour format first 
+        String thisStartTime24 = "";
+        if (this.getStartMorning())
+            thisStartTime24 += this.getStartTimeHours() + 12;
+        else 
+            thisStartTime24 += this.getStartTimeHours();
 
+        int startTimeMins = this.getStartTimeMinutes();
+        if (startTimeMins < 10)
+            thisStartTime24 += ":" + "0" + startTimeMins + ":00";
+        else 
+            thisStartTime24 += ":" + startTimeMins + ":00";
+        
+        thisStartTime24 = "01/01/1970 " + thisStartTime24;
 
+        String thisEndTime24 = "";
+        if (this.getEndMorning())
+            thisEndTime24 += this.getEndTimeHours() + 12;
+        else 
+            thisEndTime24 += this.getEndTimeHours();
 
+        startTimeMins = this.getEndTimeMinutes();
+        if (startTimeMins < 10)
+            thisEndTime24 += ":" + "0" + startTimeMins + ":00";
+        else 
+            thisEndTime24 += ":" + startTimeMins + ":00";
+        
+        thisEndTime24 = "01/01/1970 " + thisEndTime24;
+        // now let's make a datetime object from it 
+        Date thisStartEpoch;
+        Date thisEndEpoch;
+        try {
+            thisStartEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisStartTime24);
+            thisEndEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisEndTime24);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        String otherStartTime24 = "";
+        if (otherTime.getStartMorning())
+            otherStartTime24 += otherTime.getStartTimeHours() + 12;
+        else 
+            otherStartTime24 += otherTime.getStartTimeHours();
+
+        startTimeMins = otherTime.getStartTimeMinutes();
+        if (startTimeMins < 10)
+            otherStartTime24 += ":" + "0" + startTimeMins + ":00";
+        else 
+            otherStartTime24 += ":" + startTimeMins + ":00";
+        
+        otherStartTime24 = "01/01/1970 " + otherStartTime24;
+
+        String otherEndTime24 = "";
+        if (this.getEndMorning())
+            otherEndTime24 += otherTime.getEndTimeHours() + 12;
+        else 
+            otherEndTime24 += otherTime.getEndTimeHours();
+
+        startTimeMins = otherTime.getEndTimeMinutes();
+        if (startTimeMins < 10)
+            otherEndTime24 += ":" + "0" + startTimeMins + ":00";
+        else 
+            otherEndTime24 += ":" + startTimeMins + ":00";
+        
+        otherEndTime24 = "01/01/1970 " + otherEndTime24;
+
+        // now let's make a datetime object from it 
+        Date otherStartEpoch;
+        Date otherEndEpoch;
+        try {
+            System.out.println(otherEndTime24);
+            System.out.println(otherStartTime24);
+            otherStartEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(otherStartTime24);
+            otherEndEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(otherEndTime24);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+
+        return true;
     }
 
     private boolean validateTimeGiven() {
@@ -100,14 +176,14 @@ public class Time {
         } 
         return true;        
     }
-    
+
     public boolean parseTime(String timeGiven) { 
         // parse the timeGiven and make sure it's valid 
         // adjust each attribute to the timeGiven 
         // return true if success, false if there's a conflict or an invalid entry 
         timeGiven.toLowerCase();
         timeGiven.replace(" ", "");
-        Pattern time = Pattern.compile("[0-9][0-9][:][0-9][0-9][ap][m][-][0-9][0-9][:][0-9][0-9][ap][m]");
+        Pattern time = Pattern.compile("[0-9][0-9]:[0-9][0-9][ap][m][-][0-9][0-9]:[0-9][0-9][ap][m]");
         Matcher match = time.matcher(timeGiven);
         if (!match.matches()) {
             System.out.println("The time format given is invalid. Please try again.");
@@ -118,16 +194,18 @@ public class Time {
         int minutes;
         boolean timeZoneMorning = true;
 
-        hours = timeGiven.charAt(0) * 10 + timeGiven.charAt(1);
-        minutes  = timeGiven.charAt(3) * 10 + timeGiven.charAt(4);
+        hours = Character.getNumericValue(timeGiven.charAt(0)) * 10 + Character.getNumericValue(timeGiven.charAt(1));
+        minutes  = Character.getNumericValue(timeGiven.charAt(3)) * 10 + Character.getNumericValue(timeGiven.charAt(4));
+
         if (timeGiven.charAt(5) == 'p')
             timeZoneMorning = false;
         
         this.setStartTime(hours, minutes, timeZoneMorning);
 
-        hours = timeGiven.charAt(7) * 10 + timeGiven.charAt(8);
-        minutes  = timeGiven.charAt(10) * 10 + timeGiven.charAt(11);
-        if (timeGiven.charAt(12) == 'p')
+        hours = Character.getNumericValue(timeGiven.charAt(8)) * 10 + Character.getNumericValue(timeGiven.charAt(9));
+        minutes  = Character.getNumericValue(timeGiven.charAt(11)) * 10 + Character.getNumericValue(timeGiven.charAt(12));
+
+        if (timeGiven.charAt(13) == 'p')
             timeZoneMorning = false;
         else 
             timeZoneMorning = true;
@@ -135,8 +213,7 @@ public class Time {
         this.setEndTime(hours, minutes, timeZoneMorning);
 
         // now we need to make sure that the time given was valid 
-        this.validateTimeGiven();
-        return true;
+        return this.validateTimeGiven();
     }
 
     public String toString() {
@@ -164,6 +241,15 @@ public class Time {
             s += "pm";
         
         return s;
+    }
+
+    public static void main(String[] args) {
+        Time t = new Time();
+        t.parseTime("12:00pm-02:00pm");
+        Time t1 = new Time();
+        t1.parseTime("12:00pm-02:00pm");
+
+        t.checkOverlap(t1);
     }
 }
 
