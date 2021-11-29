@@ -57,17 +57,24 @@ public class Time {
         return this.endMorning;
     }
 
+    boolean simpleOverlap(Date start1, Date end1, Date start2, Date end2){
+        // a simple test to check if the times for two movies overlap
+        return start1.getTime() <= end2.getTime() && start2.getTime() <= end1.getTime(); 
+    }
+
     private boolean checkOverlap(Time otherTime) {
         // checks if there is an overlap between this object's time 
         // and the object passed 
+        // if this is true, then they overlap
+        // if this is false, then they are valid
 
         // as long as the date and month are the same, we can set constraints 
         // we need to parse this into a 24 hour format first 
         String thisStartTime24 = "";
         if (this.getStartMorning())
-            thisStartTime24 += this.getStartTimeHours() + 12;
-        else 
             thisStartTime24 += this.getStartTimeHours();
+        else 
+            thisStartTime24 += this.getStartTimeHours() + 12;
 
         int startTimeMins = this.getStartTimeMinutes();
         if (startTimeMins < 10)
@@ -79,9 +86,9 @@ public class Time {
 
         String thisEndTime24 = "";
         if (this.getEndMorning())
-            thisEndTime24 += this.getEndTimeHours() + 12;
-        else 
             thisEndTime24 += this.getEndTimeHours();
+        else 
+            thisEndTime24 += this.getEndTimeHours() + 12;
 
         startTimeMins = this.getEndTimeMinutes();
         if (startTimeMins < 10)
@@ -89,22 +96,13 @@ public class Time {
         else 
             thisEndTime24 += ":" + startTimeMins + ":00";
         
-        thisEndTime24 = "01/01/1970 " + thisEndTime24;
-        // now let's make a datetime object from it 
-        Date thisStartEpoch;
-        Date thisEndEpoch;
-        try {
-            thisStartEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisStartTime24);
-            thisEndEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisEndTime24);
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        thisEndTime24 = "01/01/1970 " + thisEndTime24;        
 
         String otherStartTime24 = "";
         if (otherTime.getStartMorning())
-            otherStartTime24 += otherTime.getStartTimeHours() + 12;
-        else 
             otherStartTime24 += otherTime.getStartTimeHours();
+        else 
+            otherStartTime24 += otherTime.getStartTimeHours() + 12;
 
         startTimeMins = otherTime.getStartTimeMinutes();
         if (startTimeMins < 10)
@@ -115,10 +113,10 @@ public class Time {
         otherStartTime24 = "01/01/1970 " + otherStartTime24;
 
         String otherEndTime24 = "";
-        if (this.getEndMorning())
-            otherEndTime24 += otherTime.getEndTimeHours() + 12;
-        else 
+        if (this.getEndMorning()) 
             otherEndTime24 += otherTime.getEndTimeHours();
+        else 
+            otherEndTime24 += otherTime.getEndTimeHours() + 12;
 
         startTimeMins = otherTime.getEndTimeMinutes();
         if (startTimeMins < 10)
@@ -128,19 +126,22 @@ public class Time {
         
         otherEndTime24 = "01/01/1970 " + otherEndTime24;
 
+        System.out.println(otherEndTime24);
         // now let's make a datetime object from it 
         Date otherStartEpoch;
         Date otherEndEpoch;
+        Date thisStartEpoch;
+        Date thisEndEpoch;
         try {
-            System.out.println(otherEndTime24);
-            System.out.println(otherStartTime24);
+            thisStartEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisStartTime24);
+            thisEndEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisEndTime24);        
             otherStartEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(otherStartTime24);
             otherEndEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(otherEndTime24);
+            return this.simpleOverlap(thisStartEpoch, thisEndEpoch, otherStartEpoch, otherEndEpoch);
         } catch (Exception e) {
             System.out.println(e);
+            return false;
         }
-
-        return true;
     }
 
     private boolean validateTimeGiven() {
@@ -225,9 +226,9 @@ public class Time {
             s += this.getStartTimeHours() + ":" + startTimeMins;
 
         if (this.getStartMorning())
-            s += "am";
+            s += "am-";
         else 
-            s += "pm";
+            s += "pm-";
         
         int endTimeMins = this.getEndTimeMinutes();
         if (endTimeMins < 10)
@@ -245,11 +246,12 @@ public class Time {
 
     public static void main(String[] args) {
         Time t = new Time();
-        t.parseTime("12:00pm-02:00pm");
+        t.parseTime("02:00pm-04:00pm");
         Time t1 = new Time();
-        t1.parseTime("12:00pm-02:00pm");
-
-        t.checkOverlap(t1);
+        t1.parseTime("02:00pm-04:00pm");
+        System.out.println(t);
+        System.out.println(t1);
+        System.out.println( t.checkOverlap(t1) );
     }
 }
 
