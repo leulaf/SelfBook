@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class Theatre {
@@ -43,6 +41,10 @@ public class Theatre {
 		s += "Seats:\n";
 		return s;
 	}
+
+	public int getNumber() {
+		return this.theatreNumber;
+	} 
 	
 	public void displaySeats() {
 		System.out.println("     -- SCREEN --\n");
@@ -154,7 +156,6 @@ public class Theatre {
 		String cvv;
 		System.out.println("Welcome to checkout!");
 		while (true) {
-			System.out.println("Press 0 to quit at any time");
 			System.out.println("Enter 16 digit credit card number. Use format (xxxx xxxx xxxx xxxx): ");
 			String cardNumber = inputObj.next();
 
@@ -243,31 +244,37 @@ public class Theatre {
 		this.startTimer(seatsSelected);
 	}
 	
-	private void startTimer(ArrayList<Seat> seatsSelected) {
-		Timer timer = new Timer();
-		timer.schedule(
-			new TimerTask() {
-				public void run() {
-					Scanner inputObj = new Scanner(System.in).useDelimiter("\n");
-					while (true) {
-						System.out.println("Your session has expired!");
-						System.out.println("If you want to start over, press 1"); 
-						System.out.println("If you want to cancel, press q");
-						String input = inputObj.next();
-						if (input.equals("q"))
-							return; 
-						else if (input.equals("1")) {
-							runTheatreUI();
-							break;
-						} else {
-							System.out.println("Please enter valid choice!");
-						}
-					}
-				}
+	private void expiredCheckout() {
+		Scanner inputObj = new Scanner(System.in);
+		while (true) {
+			System.out.println("Your session has expired!");
+			System.out.println("If you want to start over, press 1"); 
+			System.out.println("If you want to cancel, press q");
+			String input = inputObj.next();
+			System.out.println("made it here");
+			if (input.equals("q"))
+				return;
+			else if (input.equals("1")) {
+				this.runTheatreUI();
+				break;
+			} else {
+				System.out.println("Please enter valid choice!");
 			}
-			,5*60*1000);
+		}
+	}
+
+	private void startTimer(ArrayList<Seat> seatsSelected) {
+		// Timer timer = new Timer();
+		// timer.schedule(
+		// 	new TimerTask() {
+		// 		public void run() {
+		// 			expiredCheckout();
+		// 			return;
+		// 		}
+		// 	}
+		// 	,1*3*1000);
 		ArrayList<Object> checkoutInfo = this.checkout();
-		timer.cancel();
+		// timer.cancel();
 		if (checkoutInfo.get(0).equals(true)) {
 			for (int i = 0; i < seatsSelected.size(); i++) {
 				seatsSelected.get(i).setStatus(Seat.TAKEN);

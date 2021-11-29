@@ -5,12 +5,12 @@ public class Movie {
     String name;
     double price;
     int tickets;
-    HashMap<String, String> timeLocation = new HashMap<String, String>();
+    HashMap<Time,Theatre> timeLocation = new HashMap<Time,Theatre>();
     
-    public Movie (String name, int tickets, double price){
+    public Movie (String name, double price){
         this.name = name;
         this.price = price;
-        this.tickets = tickets;
+        this.tickets = Theatre.TOTAL_NUM_SEATS;
     }
 
     public String getName(){
@@ -21,17 +21,16 @@ public class Movie {
         System.out.println(this.name);
     }
 
-
     public void printTimes(){
         System.out.println("Show times for " + this.name + ":");
         
-        for (Map.Entry<String, String> entry : timeLocation.entrySet()) {
+        for (Map.Entry<Time,Theatre> entry : timeLocation.entrySet()) {
             System.out.println("- " + entry.getKey());
         }
     }
 
     public void printLocations(){
-        for (Map.Entry<String, String> entry : timeLocation.entrySet()) {
+        for (Map.Entry<Time,Theatre> entry : timeLocation.entrySet()) {
             System.out.println("- " + entry.getValue());
         }
     }
@@ -41,9 +40,9 @@ public class Movie {
         int track = 0;
     	System.out.println("Show times for " + this.name + ":");
         
-        for (Map.Entry<String, String> entry : timeLocation.entrySet()) {
+        for (Map.Entry<Time,Theatre> entry : timeLocation.entrySet()) {
             System.out.println((track+1) + " - At " + entry.getKey() + " in " + entry.getValue()) ;
-            allTimes[track] = entry.getKey();
+            // allTimes[track] = entry.getKey();
             track++;
         }
         
@@ -52,7 +51,7 @@ public class Movie {
    
     
 	public void printPrice(){
-	        System.out.println("$" + this.price);
+	    System.out.println("$" + this.price);
 	}
 	
     public double getPrice(){

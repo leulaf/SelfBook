@@ -4,9 +4,20 @@ public class Main {
 
 	static ArrayList<Movie> movieList = new ArrayList<Movie>();
 	static Scanner input = new Scanner(System.in);
+
+	// all the theatres in the movie theatre 
+	public static final Theatre[] ALL_THEATRES = { new Theatre(1), new Theatre(2), new Theatre(3), new Theatre(4), new Theatre(5), new Theatre(6), new Theatre(7), new Theatre(8), new Theatre(9), new Theatre(10) };
 	
 	//remove later
 	static boolean ranOnce = false;
+
+	public static void showAllTheatres() {
+		// shows admin all theatre movie + time combinations currently showing 
+		for (int i = 0; i < ALL_THEATRES.length; i++) {
+			System.out.println("----------------");
+			System.out.println("Theatre: " + ALL_THEATRES[i].getNumber());
+		}
+	}
 
 	//remove Admin.movies.clear(); statement later
 	public static void main(String[] args) {
@@ -69,21 +80,22 @@ public class Main {
 						Admin.movies.clear();
 						main(null);
 					}else if(adminChoice == 1) {
-						int numTickets;
+						// int numTickets;
 						double price;
 						System.out.println("Enter the name of the Movie you want to add:");
 						String movieName = input.nextLine();
 						
-						while(true) {
-							System.out.println("Enter the number of tickets available for " + movieName);
-							try {
-								numTickets = Integer.parseInt(input.nextLine());
-							} catch (NumberFormatException e) {
-								System.out.println("Input was incorrect, please try again");
-								continue;
-							}
-							break;
-						}
+						// Commenting out for now - num seats is set by the theatre class 
+						// while(true) {
+						// 	System.out.println("Enter the number of tickets available for " + movieName);
+						// 	try {
+						// 		numTickets = Integer.parseInt(input.nextLine());
+						// 	} catch (NumberFormatException e) {
+						// 		System.out.println("Input was incorrect, please try again");
+						// 		continue;
+						// 	}
+						// 	break;
+						// }
 						while(true) {	
 							System.out.println("Enter How much the tickets for " + movieName + " should cost");
 							try {
@@ -94,17 +106,28 @@ public class Main {
 							}
 							break;
 						}
-						Movie added = Admin.addMovie(movieName, numTickets, price);
+						Movie added = Admin.addMovie(movieName, price);
 						boolean addOther = true;
-						
-						
-						
+						showAllTheatres();
+
+	
 						while(addOther) {
-							System.out.println("Enter the when showing time of " + movieName + "will be (EX: 12PM-2PM)");
+							int movieLocation;
+							System.out.println("Enter when the showing time of " + movieName + "will be (EX: 12PM-2PM)");
 							String movieTime = input.nextLine();
-							System.out.println("Enter where the location the showing for " + movieName + " will be");
-							String movieLocation = input.nextLine();
-							Admin.addTimeLocation(added, movieTime, movieLocation);
+							System.out.println("Enter where the location the showing for " + movieName + " will be (Choose: 1-10)");
+							try {
+								movieLocation = Integer.parseInt(input.nextLine());
+								if (movieLocation < 1 || movieLocation > 10) 
+									System.out.println("Please enter a valid theatre number.");
+								else 
+									break;
+							} catch (NumberFormatException e) {
+								System.out.println("Input was incorrect, please try again");
+								continue;
+							}
+							Theatre theatreChoice = ALL_THEATRES[movieLocation];
+							Admin.addTimeLocation(added, movieTime, theatreChoice);
 							System.out.println("Enter 'yes' if you want to add another time and location otherwise enter 'no'");
 							String anotherTime = input.nextLine();
 							while(true) {

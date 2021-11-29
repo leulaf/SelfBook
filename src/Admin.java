@@ -18,8 +18,8 @@ public class Admin extends User {
 		adminCode = code;
 	}
     
-	public static Movie addMovie(String name, int numTickets, double price) {
-		Movie movie = new Movie(name, numTickets, price);
+	public static Movie addMovie(String name, double price) {
+		Movie movie = new Movie(name, price);
 		movies.add(movie);
 		return movie;
 	}
@@ -28,8 +28,19 @@ public class Admin extends User {
 		movies.remove(movie);
 	}
 	
-	public static void addTimeLocation(Movie movie, String time, String location) {
-		movie.timeLocation.put(time, location);
+	public static void addTimeLocation(Movie movie, String time, Theatre location) {
+		// let's check that the time is valid 
+		Time timeGiven = new Time();
+		timeGiven.parseTime(time);
+		for (Map.Entry<Time, Theatre> entry : movie.timeLocation.entrySet()) {
+			Time currTime = entry.getKey();
+			Theatre currTheatre = entry.getValue();
+			if (currTheatre.equals(location)) {
+				// now we need to check for time overlap 
+				boolean hasOverlap = timeGiven.checkOverlap(currTime);
+			} 
+		}
+		movie.timeLocation.put(timeGiven, location);
 	}
 	
 	public static void updatePrice(Movie movie, Double newPrice){
@@ -50,17 +61,17 @@ public class Admin extends User {
     
 	public static void main() {
 		// TODO Auto-generated method stub
-		addMovie("Dune",100,15);
-		addMovie("Martian",100,15);
-		addMovie("Avengers",1000,15);
+		addMovie("Dune",15);
+		addMovie("Martian",15);
+		addMovie("Avengers",15);
 		
-		addTimeLocation(movies.get(0),"11AM-12PM","AMC43");
-		addTimeLocation(movies.get(0),"12PM-2PM","AMC44");
+		addTimeLocation(movies.get(0),"11AM-12PM",Main.ALL_THEATRES[0]);
+		addTimeLocation(movies.get(0),"12PM-2PM",Main.ALL_THEATRES[1]);
 		
-		addTimeLocation(movies.get(1),"1AM-2PM","AMC46");
-		addTimeLocation(movies.get(1),"2PM-4PM","AMC42");
+		addTimeLocation(movies.get(1),"1AM-2PM",Main.ALL_THEATRES[2]);
+		addTimeLocation(movies.get(1),"2PM-4PM",Main.ALL_THEATRES[3]);
 		
-		addTimeLocation(movies.get(2),"12AM-2aM","AMC48");
-		addTimeLocation(movies.get(2),"2PM-4PM","AMC43");
+		addTimeLocation(movies.get(2),"12AM-2aM",Main.ALL_THEATRES[4]);
+		addTimeLocation(movies.get(2),"2PM-4PM",Main.ALL_THEATRES[5]);
 	}
 }
