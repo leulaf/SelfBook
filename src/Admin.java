@@ -1,7 +1,9 @@
 import java.util.*;
 
 public class Admin extends User {
-
+	static Movie Ex1;
+	static Movie Ex2;
+	static Movie Ex3;
 	public Admin(String firstName, String lastName, String email) {
 		super(firstName, lastName, email);
 		super.isAdmin = true;
@@ -58,7 +60,8 @@ public class Admin extends User {
     	System.out.println("Tickets sold: " + ticketsSold);
     	System.out.println("Money collected: " + moneyCollected);
     }
-    
+	static boolean ranOnce = false;
+
 	public static void main() {
 		// TODO Auto-generated method stub
 		addMovie("Dune",15);
