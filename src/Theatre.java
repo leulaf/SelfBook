@@ -26,6 +26,10 @@ public class Theatre {
 		
 	}
 
+	public boolean equals(Theatre theatre) {
+		return this.getNumber() == theatre.getNumber();
+	}
+
 	private int indexOf(int row) {
 		for (int i = 0; i < ROWS; i++) {
 			if (Seat.ROW_HASH[i] == row) {
@@ -38,7 +42,7 @@ public class Theatre {
 	public String toString() {
 		String s = "Theatre: " + this.theatreNumber + "\n";
 //		s += "Movie: " + this.movie + "\n";
-		s += "Seats:\n";
+		// s += "Seats:\n";
 		return s;
 	}
 

@@ -62,7 +62,7 @@ public class Time {
         return start1.getTime() <= end2.getTime() && start2.getTime() <= end1.getTime(); 
     }
 
-    private boolean checkOverlap(Time otherTime) {
+    public boolean checkOverlap(Time otherTime) {
         // checks if there is an overlap between this object's time 
         // and the object passed 
         // if this is true, then they overlap
@@ -126,7 +126,6 @@ public class Time {
         
         otherEndTime24 = "01/01/1970 " + otherEndTime24;
 
-        System.out.println(otherEndTime24);
         // now let's make a datetime object from it 
         Date otherStartEpoch;
         Date otherEndEpoch;
@@ -172,6 +171,15 @@ public class Time {
             } else if (endHours == startHours) {
                 return (endMinutes > startMinutes);
             } else {
+                // we need to make sure that we adjust the start time and end time. 
+                if (!startMorning && startHours != 12)
+                    startHours += 12;
+                if (!endMorning && endHours != 12)
+                    endHours += 12;
+
+                if (endHours > startHours) 
+                    return true;
+                
                 return false;
             }
         } 
@@ -182,8 +190,8 @@ public class Time {
         // parse the timeGiven and make sure it's valid 
         // adjust each attribute to the timeGiven 
         // return true if success, false if there's a conflict or an invalid entry 
-        timeGiven.toLowerCase();
-        timeGiven.replace(" ", "");
+        timeGiven = timeGiven.toLowerCase();
+        timeGiven = timeGiven.replace(" ", "");
         Pattern time = Pattern.compile("[0-9][0-9]:[0-9][0-9][ap][m][-][0-9][0-9]:[0-9][0-9][ap][m]");
         Matcher match = time.matcher(timeGiven);
         if (!match.matches()) {
@@ -242,16 +250,6 @@ public class Time {
             s += "pm";
         
         return s;
-    }
-
-    public static void main(String[] args) {
-        Time t = new Time();
-        t.parseTime("02:00pm-04:00pm");
-        Time t1 = new Time();
-        t1.parseTime("02:00pm-04:00pm");
-        System.out.println(t);
-        System.out.println(t1);
-        System.out.println( t.checkOverlap(t1) );
     }
 }
 

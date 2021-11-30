@@ -39,7 +39,6 @@ public class Movie {
         String[] allTimes = new String[timeLocation.size()];
         int track = 0;
     	System.out.println("Show times for " + this.name + ":");
-        
         for (Map.Entry<Time,Theatre> entry : timeLocation.entrySet()) {
             System.out.println((track+1) + " - At " + entry.getKey() + " in " + entry.getValue()) ;
             // allTimes[track] = entry.getKey();
@@ -56,6 +55,20 @@ public class Movie {
 	
     public double getPrice(){
         return this.price;
+    }
+
+    public ArrayList<Time> getTimesInTheatre(Theatre theatre) {
+        // returns all the show times in a given theatre 
+        ArrayList<Time> allTimes = new ArrayList<Time>();
+        for (Map.Entry<Time,Theatre> entry : timeLocation.entrySet()) {
+            if (entry.getValue().equals(theatre)) 
+                allTimes.add(entry.getKey());
+        }
+        return allTimes;
+    }
+
+    public String toString() {
+        return this.getName();
     }
 
 }

@@ -2,7 +2,7 @@ import java.util.*;
 
 public class Main {
 
-	static ArrayList<Movie> movieList = new ArrayList<Movie>();
+	// static ArrayList<Movie> movieList = new ArrayList<Movie>();
 	static Scanner input = new Scanner(System.in);
 
 	// all the theatres in the movie theatre 
@@ -11,11 +11,26 @@ public class Main {
 	//remove later
 	static boolean ranOnce = false;
 
-	public static void showAllTheatres() {
+	static void showAllTheatres() {
 		// shows admin all theatre movie + time combinations currently showing 
+		System.out.println("Here are all the current showtimes!");
 		for (int i = 0; i < ALL_THEATRES.length; i++) {
 			System.out.println("----------------");
-			System.out.println("Theatre: " + ALL_THEATRES[i].getNumber());
+			System.out.println("   Theatre " + ALL_THEATRES[i].getNumber());
+			System.out.println("   ----------    ");
+			// now iterate through the movies to print their times
+			// each movie's times and theatres can be found in their hashmap attribute 
+			for (int j = 0; j < Admin.movies.size(); j++) {
+				Movie currMovie = Admin.movies.get(j);
+				ArrayList<Time> showTimes = currMovie.getTimesInTheatre(ALL_THEATRES[i]);
+				if (showTimes.size() > 0) {
+					System.out.println(currMovie);
+					for (int k = 0; k < showTimes.size(); k++) {
+						System.out.println("   " + showTimes.get(k));
+					}
+				}
+			}
+			System.out.println("----------------");
 		}
 	}
 
@@ -23,7 +38,10 @@ public class Main {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		Admin.main();
+		if (!ranOnce) {
+			Admin.main();
+			ranOnce = true;
+		}
 			
 			int movieChoice;
 			int timeChoice;
@@ -110,24 +128,27 @@ public class Main {
 						boolean addOther = true;
 						showAllTheatres();
 
-	
 						while(addOther) {
 							int movieLocation;
-							System.out.println("Enter when the showing time of " + movieName + "will be (EX: 12PM-2PM)");
+							System.out.println("Enter when the showing time of " + movieName + " will be (EX: 12:00PM-02:00PM)");
 							String movieTime = input.nextLine();
 							System.out.println("Enter where the location the showing for " + movieName + " will be (Choose: 1-10)");
 							try {
 								movieLocation = Integer.parseInt(input.nextLine());
 								if (movieLocation < 1 || movieLocation > 10) 
 									System.out.println("Please enter a valid theatre number.");
-								else 
-									break;
+
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
 							}
-							Theatre theatreChoice = ALL_THEATRES[movieLocation];
-							Admin.addTimeLocation(added, movieTime, theatreChoice);
+							Theatre theatreChoice = ALL_THEATRES[movieLocation-1];							
+							// make sure that we can add the movie 
+							if (!Admin.addTimeLocation(added, movieTime, theatreChoice)) {
+								// we failed so let's allow them to try again.
+								continue;
+							}
+
 							System.out.println("Enter 'yes' if you want to add another time and location otherwise enter 'no'");
 							String anotherTime = input.nextLine();
 							while(true) {
@@ -268,10 +289,10 @@ public class Main {
 					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 					main(null);
 				}else if(timeChoice > 0 && timeChoice < times.length+1) {
-					System.out.println("Seats available for " + Admin.movies.get(movieChoice - 1).getName() + " at " + 
-					times[timeChoice-1] + " in " + Admin.movies.get(movieChoice - 1).timeLocation.get(times[timeChoice-1]));
+					// System.out.println("Seats available for " + Admin.movies.get(movieChoice - 1).getName() + " at " + 
+					// times[timeChoice-1] + " in " + Admin.movies.get(movieChoice - 1).timeLocation.get(times[timeChoice-1]));
 					//just an example implemented later
-					//Theatre.main(null);;
+					Theatre.main(null);;
 					break;
 				}else {
 					System.out.println("Input was incorrect, please try again");
