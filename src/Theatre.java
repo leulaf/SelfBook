@@ -148,7 +148,7 @@ public class Theatre {
 					continue;
 				}
 				break;
-			} catch (Exception e) {
+			} catch (NumberFormatException e) {
 				System.out.println("Please enter a valid number.");
 			}
 		}
