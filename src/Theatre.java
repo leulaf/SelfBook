@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Theatre {
@@ -28,6 +29,10 @@ public class Theatre {
 		
 	}
 
+	public static Theatre nullTheatre() {
+		return new Theatre(-1);
+	}
+
 	public boolean equals(Theatre theatre) {
 		return this.getNumber() == theatre.getNumber();
 	}
@@ -51,6 +56,10 @@ public class Theatre {
 	public int getNumber() {
 		return this.theatreNumber;
 	} 
+
+	public int getNumberSeatsAvailable() {
+		return this.numSeatsAvailable;
+	}
 	
 	public void displaySeats() {
 		System.out.println("     -- SCREEN --\n");
@@ -111,6 +120,14 @@ public class Theatre {
 	public void addShowTime(Time newTime) {
 		int mapSize = this.seatMap.size() + 10;
 		this.seatMap.put(newTime, new Theatre(mapSize));
+	}
+
+	public Theatre findShowTime(Time time) {
+		for (Map.Entry<Time,Theatre> entry : seatMap.entrySet()) {
+			if (time.equals(entry.getKey())) 
+				return entry.getValue();
+		}
+		return Theatre.nullTheatre();
 	}
 
 	private ArrayList<Seat> validateSeat() {

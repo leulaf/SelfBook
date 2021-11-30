@@ -276,9 +276,9 @@ public class Main {
 						main(null);
 					}else if(adminChoice == 4) {
 						System.out.println("----------------------------------------------");
-						System.out.println("-- Number of tickets sold: " + Admin.ticketsSold);
+						System.out.println("-- Number of tickets sold: " + Admin.getNumTicketsSold());
 						System.out.println("----------------------------------------------");
-						System.out.println("-- Amount of money collected: " + Admin.moneyCollected);
+						System.out.println("-- Amount of money collected: " + Admin.getTotalRevenue());
 						System.out.println("----------------------------------------------");
 						main(null);
 

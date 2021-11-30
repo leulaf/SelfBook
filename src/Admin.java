@@ -12,14 +12,33 @@ public class Admin extends User {
 	static int adminCode = 12345;
 	
     static ArrayList<Movie> movies = new ArrayList<Movie>();
-
-    static int ticketsSold = 0;
-    static double moneyCollected = 0.0;
     
     public static void setAdminCode(int code) {
 		adminCode = code;
 	}
     
+	public static int getNumTicketsSold() {
+		// gets the number of tickets sold for all movies and all times 
+		int numSold = 0;
+		for (int i = 0; i < movies.size(); i++) {
+			Movie currMovie = movies.get(i);
+			// go through all the show times
+			for (Map.Entry<Time,Theatre> entry : currMovie.timeLocation.entrySet()) {
+				Theatre theatre = entry.getValue();
+				Theatre subTheatre = theatre.findShowTime(entry.getKey());
+				if (!subTheatre.equals(Theatre.nullTheatre()))
+					numSold += (Theatre.TOTAL_NUM_SEATS - subTheatre.getNumberSeatsAvailable());
+			}
+		}
+		return numSold;
+	}
+
+	public static int getTotalRevenue() {
+		int numSold = getNumTicketsSold();
+		// this needs to be updated!!!
+		return numSold * 10;
+	}
+
 	public static Movie addMovie(String name, double price) {
 		Movie movie = new Movie(name, price);
 		movies.add(movie);
@@ -92,11 +111,6 @@ public class Admin extends User {
     	movie.price = Math.round(movie.price*100.0)/100.0;
     }
     
-
-    public static void printTotals() {
-    	System.out.println("Tickets sold: " + ticketsSold);
-    	System.out.println("Money collected: " + moneyCollected);
-    }
 	static boolean ranOnce = false;
 
 	public static void main() {
