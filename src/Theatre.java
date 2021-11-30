@@ -160,6 +160,10 @@ public class Theatre {
 				row = rowCol[0];
 				col = rowCol[1];
 				seatSelected = this.allSeats[row][col];
+				// we need to print an error message if they select a taken seat
+				if (seatSelected.getStatus() != Seat.OPEN) 
+					System.out.println("This seat is taken! Please try again!");
+
 			} while (seatSelected.getStatus() != Seat.OPEN);
 			seatSelected.setStatus(Seat.ON_HOLD);
 			this.numSeatsAvailable -= 1;
