@@ -298,5 +298,8 @@ public class Theatre {
 		Theatre t = new Theatre(1);
 		t.runTheatreUI();		
 		t.displaySeats();
+		// todo -> a receipt class that shows the user the info about their seat + movie + time
+		
+		Main.main(null);
 	}
 }

@@ -43,21 +43,25 @@ public class Admin extends User {
 		}
 		
 		// now we need to go through the movies in that location to make sure there is no overlap
-		for (Map.Entry<Time, Theatre> entry : movie.timeLocation.entrySet()) {
-			Time currTime = entry.getKey();
-			Theatre currTheatre = entry.getValue();
-			if (currTheatre.equals(location)) {
-				// now we need to check for time overlap
-				boolean hasOverlap = timeGiven.checkOverlap(currTime);
-				if (hasOverlap) {
-					System.out.println("Time conflict in " + currTheatre + "Please choose a different time!");
-					return false;
+		for (int i = 0; i < movies.size(); i++) {
+			Movie currMovie = movies.get(i);
+			for (Map.Entry<Time, Theatre> entry : currMovie.timeLocation.entrySet()) {
+				Time currTime = entry.getKey();
+				Theatre currTheatre = entry.getValue();
+				if (currTheatre.equals(location)) {
+					// now we need to check for time overlap
+					System.out.println("Checking for an overlap with " + currMovie);
+					boolean hasOverlap = timeGiven.checkOverlap(currTime);
+					System.out.println("The overlap check returned: " + hasOverlap);
+					if (hasOverlap) {
+						System.out.println("Time conflict in " + currTheatre + "Please choose a different time!");
+						return false;
+					} 
 				} 
-			} 
+			}
 		}
-
 		// if we reach here, we have succeeded
-		// System.out.println("Successfully added " + movie + " in Theatre " + location.getNumber() + " in time slot " + time);
+		System.out.println("Successfully added " + movie + " in Theatre " + location.getNumber() + " in time slot " + time);
 		movie.timeLocation.put(timeGiven, location);
 		return true;
 	}

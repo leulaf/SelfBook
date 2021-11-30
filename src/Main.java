@@ -17,7 +17,7 @@ public class Main {
 		for (int i = 0; i < ALL_THEATRES.length; i++) {
 			System.out.println("----------------");
 			System.out.println("   Theatre " + ALL_THEATRES[i].getNumber());
-			System.out.println("   ----------    ");
+			System.out.println("   ---------    ");
 			// now iterate through the movies to print their times
 			// each movie's times and theatres can be found in their hashmap attribute 
 			for (int j = 0; j < Admin.movies.size(); j++) {
@@ -137,12 +137,12 @@ public class Main {
 								movieLocation = Integer.parseInt(input.nextLine());
 								if (movieLocation < 1 || movieLocation > 10) 
 									System.out.println("Please enter a valid theatre number.");
-
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
 							}
-							Theatre theatreChoice = ALL_THEATRES[movieLocation-1];							
+							Theatre theatreChoice = ALL_THEATRES[movieLocation-1];	
+							System.out.println("Calling add Time Location");						
 							// make sure that we can add the movie 
 							if (!Admin.addTimeLocation(added, movieTime, theatreChoice)) {
 								// we failed so let's allow them to try again.
@@ -170,6 +170,8 @@ public class Main {
 							}
 						}
 						System.out.println("The movie " + movieName + " was sucessfully added along with it's price, number of tickets, times, and locations");
+						System.out.println("Here is the updated list of movies with their corresponding theatre and show time");		
+						Main.showAllTheatres();
 						main(null);
 					}else if(adminChoice == 2) {
 						int removed;

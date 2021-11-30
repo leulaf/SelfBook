@@ -1,4 +1,6 @@
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,9 +59,23 @@ public class Time {
         return this.endMorning;
     }
 
-    boolean simpleOverlap(Date start1, Date end1, Date start2, Date end2){
-        // a simple test to check if the times for two movies overlap
-        return start1.getTime() <= end2.getTime() && start2.getTime() <= end1.getTime(); 
+    boolean simpleOverlap(String start1, String end1, String start2, String end2) {
+        int s1 = Integer.parseInt(start1.split(":")[0])*60 + Integer.parseInt(start1.split(":")[1]);
+        int e1 = Integer.parseInt(end1.split(":")[0])*60 + Integer.parseInt(end1.split(":")[1]);
+        int s2 = Integer.parseInt(start2.split(":")[0])*60 + Integer.parseInt(start2.split(":")[1]);
+        int e2 = Integer.parseInt(end2.split(":")[0])*60 + Integer.parseInt(end2.split(":")[1]);
+
+        System.out.println(s1);
+        System.out.println(e1);
+        System.out.println(s2);
+        System.out.println(e2);
+
+        System.out.println(s2 >= s1 && s2 <= e1);
+        System.out.println(e2 >= s1 && e2 <= e1);
+        System.out.println((s1 >= s2 && s1 <= e2)); 
+        System.out.println((s2 >= s1 && s2 <= e1));
+        return (s2 >= s1 && s2 <= e1) || (e2 >= s1 && e2 <= e1) || (s1 >= s2 && s1 <= e2) || (s2 >= s1 && s2 <= e1);
+        //  return start2.getTime() >= end1.getTime() || end2.getTime() >= start1.getTime() || (start2.getTime() >= start1.getTime() && end2.getTime() <=end1.getTime());
     }
 
     public boolean checkOverlap(Time otherTime) {
@@ -72,9 +88,15 @@ public class Time {
         // we need to parse this into a 24 hour format first 
         String thisStartTime24 = "";
         if (this.getStartMorning())
-            thisStartTime24 += this.getStartTimeHours();
+            if (this.getStartTimeHours() == 12)
+                thisStartTime24 += "00";
+            else 
+                thisStartTime24 += this.getStartTimeHours();
         else 
-            thisStartTime24 += this.getStartTimeHours() + 12;
+            if (this.getStartTimeHours() != 12)
+                thisStartTime24 += this.getStartTimeHours() + 12;
+            else 
+                thisStartTime24 += this.getStartTimeHours();
 
         int startTimeMins = this.getStartTimeMinutes();
         if (startTimeMins < 10)
@@ -82,13 +104,19 @@ public class Time {
         else 
             thisStartTime24 += ":" + startTimeMins + ":00";
         
-        thisStartTime24 = "01/01/1970 " + thisStartTime24;
 
         String thisEndTime24 = "";
         if (this.getEndMorning())
-            thisEndTime24 += this.getEndTimeHours();
+            if (this.getEndTimeHours() == 12)
+                thisEndTime24 += "00";
+            else 
+                thisEndTime24 += this.getEndTimeHours();
         else 
-            thisEndTime24 += this.getEndTimeHours() + 12;
+            if (this.getEndTimeHours() != 12)
+                thisEndTime24 += this.getEndTimeHours() + 12;
+            else 
+                thisEndTime24 += this.getEndTimeHours();
+
 
         startTimeMins = this.getEndTimeMinutes();
         if (startTimeMins < 10)
@@ -96,13 +124,17 @@ public class Time {
         else 
             thisEndTime24 += ":" + startTimeMins + ":00";
         
-        thisEndTime24 = "01/01/1970 " + thisEndTime24;        
-
         String otherStartTime24 = "";
         if (otherTime.getStartMorning())
-            otherStartTime24 += otherTime.getStartTimeHours();
+            if (otherTime.getStartTimeHours() == 12)
+                otherStartTime24 += "00";
+            else 
+                otherStartTime24 += otherTime.getStartTimeHours();
         else 
-            otherStartTime24 += otherTime.getStartTimeHours() + 12;
+            if (otherTime.getStartTimeHours() != 12)
+                otherStartTime24 += otherTime.getStartTimeHours() + 12;
+            else 
+                otherStartTime24 += otherTime.getStartTimeHours();
 
         startTimeMins = otherTime.getStartTimeMinutes();
         if (startTimeMins < 10)
@@ -110,13 +142,17 @@ public class Time {
         else 
             otherStartTime24 += ":" + startTimeMins + ":00";
         
-        otherStartTime24 = "01/01/1970 " + otherStartTime24;
-
         String otherEndTime24 = "";
-        if (this.getEndMorning()) 
-            otherEndTime24 += otherTime.getEndTimeHours();
+        if (otherTime.getEndMorning()) 
+            if (otherTime.getEndTimeHours() == 12)
+                otherEndTime24 += "00";
+            else
+                otherEndTime24 += otherTime.getEndTimeHours();
         else 
-            otherEndTime24 += otherTime.getEndTimeHours() + 12;
+            if (otherTime.getEndTimeHours() != 12)
+                otherEndTime24 += otherTime.getEndTimeHours() + 12;
+            else 
+                otherEndTime24 += otherTime.getEndTimeHours();
 
         startTimeMins = otherTime.getEndTimeMinutes();
         if (startTimeMins < 10)
@@ -124,21 +160,33 @@ public class Time {
         else 
             otherEndTime24 += ":" + startTimeMins + ":00";
         
-        otherEndTime24 = "01/01/1970 " + otherEndTime24;
+        // otherEndTime24 = "01/01/1970 " + otherEndTime24;
 
         // now let's make a datetime object from it 
-        Date otherStartEpoch;
-        Date otherEndEpoch;
-        Date thisStartEpoch;
-        Date thisEndEpoch;
+        // Date otherStartEpoch;
+        // Date otherEndEpoch;
+        // Date thisStartEpoch;
+        // Date thisEndEpoch;
         try {
-            thisStartEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisStartTime24);
-            thisEndEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(thisEndTime24);        
-            otherStartEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(otherStartTime24);
-            otherEndEpoch = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm:ss").parse(otherEndTime24);
-            return this.simpleOverlap(thisStartEpoch, thisEndEpoch, otherStartEpoch, otherEndEpoch);
+            // System.out.println(thisStartTime24);
+            // System.out.println(thisEndTime24);
+            // System.out.println(otherStartTime24);
+            // System.out.println(otherEndTime24);
+            // SimpleDateFormat epochFormat = new java.text.SimpleDateFormat("HH:mm:ss");
+
+            // thisStartEpoch = epochFormat.parse(thisStartTime24);
+            // thisEndEpoch = epochFormat.parse(thisEndTime24);     
+
+            // otherStartEpoch = epochFormat.parse(otherStartTime24);
+            // otherEndEpoch = epochFormat.parse(otherEndTime24);
+
+            // System.out.println("Movie 1: " + thisStartEpoch + "-" + thisEndEpoch);
+            // System.out.println("Movie 2: " + otherStartEpoch + "-" + otherEndEpoch);
+
+            return this.simpleOverlap(thisStartTime24, thisEndTime24, otherStartTime24, otherEndTime24);
+            // return this.simpleOverlap(thisStartEpoch, thisEndEpoch, otherStartEpoch, otherEndEpoch);
         } catch (Exception e) {
-            System.out.println(e);
+            System.out.println("Date overlap failed with exception: " + e);
             return false;
         }
     }
@@ -161,28 +209,20 @@ public class Time {
             return false;
         }
 
+        // commenting this out for now because it is not a needed feature 
         // step 2 check that the time slot is valid (i.e. there's no 12pm - 10am)
-        boolean startMorning = this.getStartMorning();
-        boolean endMorning = this.getEndMorning();
-        if (startMorning == endMorning) {
-            // the time stamps are in the same zone, so now we just need to check that end is greater than start
-            if (endHours > startHours) {
-                return true;
-            } else if (endHours == startHours) {
-                return (endMinutes > startMinutes);
-            } else {
-                // we need to make sure that we adjust the start time and end time. 
-                if (!startMorning && startHours != 12)
-                    startHours += 12;
-                if (!endMorning && endHours != 12)
-                    endHours += 12;
-
-                if (endHours > startHours) 
-                    return true;
-                
-                return false;
-            }
-        } 
+        // boolean startMorning = this.getStartMorning();
+        // boolean endMorning = this.getEndMorning(); 
+        // if (startMorning == endMorning) {
+        //     // the time stamps are in the same zone, so now we just need to check that end is greater than start
+        //     if (endHours > startHours) {
+        //         return true;
+        //     } else if (endHours == startHours) {
+        //         return (endMinutes > startMinutes);
+        //     } else {
+        //         return true; 
+        //     }
+        // } 
         return true;        
     }
 
