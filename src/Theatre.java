@@ -142,7 +142,7 @@ public class Theatre {
 		while (true) {
 			try {
 				System.out.println("Please enter the number of seats you would like: ");
-				numberOfSeats = inputObj.nextInt();
+				numberOfSeats = Integer.parseInt(inputObj.nextLine());
 				if (numberOfSeats > this.numSeatsAvailable) {
 					System.out.println("Not enough seats available. Please enter another number.");
 					continue;
@@ -266,30 +266,31 @@ public class Theatre {
 	}
 
 	private void runTheatreUI() {
+		// initialize an array of seats selected
 		ArrayList<Seat> seatsSelected = new ArrayList<Seat>();
-
+		// validate that these seats are not currently held
 		seatsSelected = this.validateSeat();
 		this.startTimer(seatsSelected);
 	}
 	
-	private void expiredCheckout() {
-		Scanner inputObj = new Scanner(System.in);
-		while (true) {
-			System.out.println("Your session has expired!");
-			System.out.println("If you want to start over, press 1"); 
-			System.out.println("If you want to cancel, press q");
-			String input = inputObj.next();
-			System.out.println("made it here");
-			if (input.equals("q"))
-				return;
-			else if (input.equals("1")) {
-				this.runTheatreUI();
-				break;
-			} else {
-				System.out.println("Please enter valid choice!");
-			}
-		}
-	}
+	// private void expiredCheckout() {
+	// 	Scanner inputObj = new Scanner(System.in);
+	// 	while (true) {
+	// 		System.out.println("Your session has expired!");
+	// 		System.out.println("If you want to start over, press 1"); 
+	// 		System.out.println("If you want to cancel, press q");
+	// 		String input = inputObj.next();
+	// 		System.out.println("made it here");
+	// 		if (input.equals("q"))
+	// 			return;
+	// 		else if (input.equals("1")) {
+	// 			this.runTheatreUI();
+	// 			break;
+	// 		} else {
+	// 			System.out.println("Please enter valid choice!");
+	// 		}
+	// 	}
+	// }
 
 	private void startTimer(ArrayList<Seat> seatsSelected) {
 		// Timer timer = new Timer();
@@ -319,8 +320,11 @@ public class Theatre {
 	}
 
 	public void runCheckout(Time showTime) {
+		// get the proper sub theatre 
 		Theatre t = this.seatMap.get(showTime);
+		// run the theatre UI to select seats and checkout 
 		t.runTheatreUI();
+		// show the seats they selected again
 		t.displaySeats();
 		// now we have to send them a receipt 
 
