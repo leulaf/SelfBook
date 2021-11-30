@@ -108,7 +108,7 @@ public class Theatre {
 			// get the col desired
 			try {
 				System.out.println("Please select a column: ");
-				col = Integer.parseInt(inputObj.nextLine());
+				col = Integer.parseInt(inputObj.next());
 				if (col >= 0 && col <=9)
 					break;
 				System.out.println("Please enter a valid column.");
