@@ -103,13 +103,18 @@ public class Theatre {
 				break;
 			System.out.println("Please enter a valid row.");
 		}
+
 		while (true) {
 			// get the col desired
-			System.out.println("Please select a column: ");
-			col = inputObj.nextInt();
-			if (col >= 0 && col <=9)
-				break;
-			System.out.println("Please enter a valid column.");
+			try {
+				System.out.println("Please select a column: ");
+				col = Integer.parseInt(inputObj.nextLine());
+				if (col >= 0 && col <=9)
+					break;
+				System.out.println("Please enter a valid column.");
+			} catch (NumberFormatException e) {
+				System.out.println("Please enter a valid integer!");
+			}
 		}
 
 		seatNum[0] = index;
