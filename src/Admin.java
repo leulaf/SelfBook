@@ -29,6 +29,21 @@ public class Admin extends User {
 	public static void removeMovie(Movie movie) {
 		movies.remove(movie);
 	}
+
+	public static void removeShowtimeForMovie(Movie movieSelected, Time timeSelected, Theatre theatreSelected) {
+		// removes a specific movie showtime from the theatre 
+		
+		// iterate through all the showtimes for this movie 
+		for (Map.Entry<Time, Theatre> entry : movieSelected.timeLocation.entrySet()) {
+			Time currTime = entry.getKey();
+			Theatre currTheatre = entry.getValue();
+			// if the showtime and theatre chosen are the same, remove it
+			if (timeSelected.equals(currTime) && currTheatre.equals(theatreSelected)) {
+				movieSelected.timeLocation.remove(currTime);
+				break;
+			}
+		}
+	}
 	
 	public static boolean addTimeLocation(Movie movie, String time, Theatre location) {
 		// adds a movie to a theatre at the specific time
@@ -62,6 +77,7 @@ public class Admin extends User {
 		}
 		// if we reach here, we have succeeded
 		System.out.println("Successfully added " + movie + " in Theatre " + location.getNumber() + " in time slot " + time);
+		location.addShowTime(timeGiven);
 		movie.timeLocation.put(timeGiven, location);
 		return true;
 	}

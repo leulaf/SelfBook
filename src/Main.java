@@ -175,8 +175,6 @@ public class Main {
 						main(null);
 					}else if(adminChoice == 2) {
 						int removed;
-						
-						
 						while(true){
 							for(int i = 0; i < Admin.movies.size(); i++) {
 								System.out.println(
@@ -196,8 +194,49 @@ public class Main {
 							}
 							break;
 						}
-						System.out.println("The movie " + Admin.movies.get(removed-1).getName() + " has been removed");
-						Admin.removeMovie(Admin.movies.get(removed-1));
+						Movie wantRemoved = Admin.movies.get(removed-1);
+						String showtimeSelected = "";
+						int showtimeSelectedInt = 0;
+						boolean clearAllTimes = false;
+						while(true){
+							wantRemoved.printTimeAndLocation();
+							System.out.println("Please select the show time you want removed, or enter A to clear all showtimes.");
+							try {
+								// parse their input
+								showtimeSelected = input.nextLine();
+								showtimeSelectedInt = Integer.parseInt(showtimeSelected);
+								if (wantRemoved.timeLocation.size()-1 <= showtimeSelectedInt-1) {
+									System.out.println("That showtime doesn't exist, please try again!");
+									continue;
+								}
+								// check for a quit 
+								if (showtimeSelectedInt == 0) {
+									main(null);
+									break;
+								}
+								break;
+							} catch (NumberFormatException e) {
+								// check if they want to clear all showtimes
+								if (showtimeSelected.toLowerCase().charAt(0) == 'a') {
+									clearAllTimes = true;
+									break;
+								}
+							}
+						}
+						// now let's remove the appropriate showtime 
+						if (clearAllTimes) {
+							System.out.println("The movie " + Admin.movies.get(removed-1).getName() + " has been removed");
+							Admin.removeMovie(Admin.movies.get(removed-1));
+						} else {
+							Movie movieSelected = Admin.movies.get(removed-1);
+							Map.Entry<Time, Theatre> correspondingShowTime = movieSelected.getShowTimeFromIndex(showtimeSelectedInt-1); 
+							if (correspondingShowTime.getKey() == null) {
+								System.out.println("We couldn't find that showtime! Sending you back to the main menu.");
+								main(null);
+							}
+							Admin.removeShowtimeForMovie(movieSelected, correspondingShowTime.getKey(), correspondingShowTime.getValue());
+							System.out.println("The movie " + movieSelected + " at " + correspondingShowTime.getKey() + " in " + correspondingShowTime.getValue() + " has been removed.");
+						}
 						main(null);
 						
 					}else if(adminChoice == 3) {
@@ -271,8 +310,6 @@ public class Main {
 				}
 			}
 			
-			
-			
 			System.out.println("\nPick the time and location for " + Admin.movies.get(movieChoice - 1).getName() + ":");
 			
 
@@ -290,11 +327,10 @@ public class Main {
 				if(timeChoice == 0){
 					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 					main(null);
-				}else if(timeChoice > 0 && timeChoice < times.length+1) {
-					// System.out.println("Seats available for " + Admin.movies.get(movieChoice - 1).getName() + " at " + 
-					// times[timeChoice-1] + " in " + Admin.movies.get(movieChoice - 1).timeLocation.get(times[timeChoice-1]));
-					//just an example implemented later
-					Theatre.main(null);;
+				}else if(timeChoice > 0 && (timeChoice-1 <= Admin.movies.get(movieChoice - 1).timeLocation.size() - 1)) {
+					// timeChoise now corresponds to a time and a theatre -> let's get that entry in our hashmap 
+					Map.Entry<Time, Theatre> showTimeChosen = Admin.movies.get(movieChoice - 1).getShowTimeFromIndex(timeChoice-1);
+					showTimeChosen.getValue().runCheckout(showTimeChosen.getKey());
 					break;
 				}else {
 					System.out.println("Input was incorrect, please try again");

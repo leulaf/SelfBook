@@ -1,13 +1,15 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
-
 
 public class Theatre {
 	
 	private Seat allSeats[][];
 	private int theatreNumber;
 	private int numSeatsAvailable;
+
+	private HashMap<Time,Theatre> seatMap = new HashMap<Time,Theatre>();
 
 	public static final int ROWS = 9;
 	public static final int SEATS_PER_ROW = 11;
@@ -104,6 +106,11 @@ public class Theatre {
 		seatNum[0] = index;
 		seatNum[1] = col;
 		return seatNum;
+	}
+
+	public void addShowTime(Time newTime) {
+		int mapSize = this.seatMap.size() + 10;
+		this.seatMap.put(newTime, new Theatre(mapSize));
 	}
 
 	private ArrayList<Seat> validateSeat() {
@@ -294,12 +301,13 @@ public class Theatre {
 		return;	
 	}
 
-	public static void main(String[] args) {
-		Theatre t = new Theatre(1);
-		t.runTheatreUI();		
+	public void runCheckout(Time showTime) {
+		Theatre t = this.seatMap.get(showTime);
+		t.runTheatreUI();
 		t.displaySeats();
-		// todo -> a receipt class that shows the user the info about their seat + movie + time
-		
+		// now we have to send them a receipt 
+
+		// send them back to main 
 		Main.main(null);
-	}
+	}  
 }

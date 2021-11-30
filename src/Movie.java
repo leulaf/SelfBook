@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.*;
 
 public class Movie {
@@ -48,6 +49,21 @@ public class Movie {
         return allTimes;
     }
    
+    public Map.Entry<Time,Theatre> getShowTimeFromIndex(int i) {
+        // find the showtime and theatre corresponding to the users choice
+        // int i is the users choice, iterate until we find it
+        int counter = 0;
+        for (Map.Entry<Time,Theatre> entry : timeLocation.entrySet()) {
+            if (counter == i) {
+                return entry;
+            }
+            counter = counter + 1;
+        }
+        // if we get here, there's no movie so lets give them a null object 
+        Entry<Time, Theatre> entry = Map.entry(null, null);
+        return entry;
+    }
+
     
 	public void printPrice(){
 	    System.out.println("$" + this.price);
