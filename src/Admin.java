@@ -109,9 +109,7 @@ public class Admin extends User {
 	static boolean ranOnce = false;
 
 	public static void main() {
-
-		System.out.println("THIS IS RUNNING");
-		// TODO Auto-generated method stub
+		// let's add some movies to kickstart the program
 		addMovie("Dune",15);
 		addMovie("Martian",15);
 		addMovie("Avengers",15);

@@ -1,8 +1,7 @@
 import java.util.*;
 
 public class Main {
-
-	// static ArrayList<Movie> movieList = new ArrayList<Movie>();
+	
 	static Scanner input = new Scanner(System.in);
 
 	// all the theatres in the movie theatre 
@@ -36,7 +35,6 @@ public class Main {
 
 	//remove Admin.movies.clear(); statement later
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		if (!ranOnce) {
 			Admin.main();

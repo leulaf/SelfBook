@@ -13,7 +13,7 @@ public class Theatre {
 
 	private HashMap<Time,Theatre> seatMap = new HashMap<Time,Theatre>();
 
-	public static Scanner inputObj = new Scanner(System.in).useDelimiter("\n");
+	static Scanner inputObj = new Scanner(System.in);
 
 	public static final int ROWS = 9;
 	public static final int SEATS_PER_ROW = 11;
@@ -118,6 +118,7 @@ public class Theatre {
 			// get the col desired
 			try {
 				System.out.println("Please select a column: ");
+				inputObj.nextLine();
 				col = Integer.parseInt(inputObj.next());
 				if (col >= 0 && col <=9)
 					break;
@@ -156,11 +157,14 @@ public class Theatre {
 		Seat seatSelected;
 		ArrayList<Seat> seatsSelected = new ArrayList<Seat>();
 		int numberOfSeats;
+		String input = "";
 
 		while (true) {
 			try {
 				System.out.println("Please enter the number of seats you would like: ");
-				numberOfSeats = Integer.parseInt(inputObj.nextLine());
+				// System.out.print("the token: " + inputObj.next());
+				input = inputObj.next();
+				numberOfSeats = Integer.parseInt(input);
 				if (numberOfSeats > this.numSeatsAvailable) {
 					System.out.println("Not enough seats available. Please enter another number.");
 					continue;
@@ -200,14 +204,15 @@ public class Theatre {
 
 	private ArrayList<Object> checkout() {
 		
-		Long number;
+		Long number; 
 		int month;
 		int year;
 		String cvv;
 		System.out.println("Welcome to checkout!");
 		while (true) {
-			System.out.println("Enter 16 digit credit card number. Use format (xxxx xxxx xxxx xxxx): ");
-			String cardNumber = inputObj.next();
+			System.out.print("Enter 16 digit credit card number. Use format (xxxx xxxx xxxx xxxx): ");
+			inputObj.nextLine();
+			String cardNumber = inputObj.nextLine();
 
 			if (this.checkInputForQuit(cardNumber))
 				return new ArrayList<Object>(Arrays.asList(false, 0, 0, 0, 0));
@@ -345,14 +350,13 @@ public class Theatre {
 		return;	
 	}
 
-	public void runCheckout(Time showTime) {
-		// set the movie price for the purpose of incrementing 
-		
+	public void runCheckout(Time showTime) {		
 		// get the proper sub theatre 
 		Theatre t = this.seatMap.get(showTime);
 
 		// run the theatre UI to select seats and checkout 
 		t.runTheatreUI();
+
 		// show the seats they selected again
 		t.displaySeats();
 		// now we have to send them a receipt 
