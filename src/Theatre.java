@@ -12,6 +12,8 @@ public class Theatre {
 
 	private HashMap<Time,Theatre> seatMap = new HashMap<Time,Theatre>();
 
+	public static Scanner inputObj = new Scanner(System.in).useDelimiter("\n");
+
 	public static final int ROWS = 9;
 	public static final int SEATS_PER_ROW = 11;
 	public static final int TOTAL_NUM_SEATS = ROWS*SEATS_PER_ROW;
@@ -91,7 +93,6 @@ public class Theatre {
 		char row;
 		int col;
 		int index;
-		Scanner inputObj = new Scanner(System.in).useDelimiter("\n");
 		int[] seatNum = new int[2];
 
 		while (true) {
@@ -136,7 +137,7 @@ public class Theatre {
 	}
 
 	private ArrayList<Seat> validateSeat() {
-		Scanner inputObj = new Scanner(System.in).useDelimiter("\n");
+		
 		int[] rowCol;
 		int row;
 		int col;
@@ -186,7 +187,7 @@ public class Theatre {
 	}
 
 	private ArrayList<Object> checkout() {
-		Scanner inputObj = new Scanner(System.in).useDelimiter("\n");
+		
 		Long number;
 		int month;
 		int year;
