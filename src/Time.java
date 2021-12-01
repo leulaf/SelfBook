@@ -62,15 +62,6 @@ public class Time {
         int s2 = Integer.parseInt(start2.split(":")[0])*60 + Integer.parseInt(start2.split(":")[1]);
         int e2 = Integer.parseInt(end2.split(":")[0])*60 + Integer.parseInt(end2.split(":")[1]);
 
-        System.out.println(s1);
-        System.out.println(e1);
-        System.out.println(s2);
-        System.out.println(e2);
-
-        System.out.println(s2 >= s1 && s2 <= e1);
-        System.out.println(e2 >= s1 && e2 <= e1);
-        System.out.println((s1 >= s2 && s1 <= e2)); 
-        System.out.println((s2 >= s1 && s2 <= e1));
         return (s2 >= s1 && s2 <= e1) || (e2 >= s1 && e2 <= e1) || (s1 >= s2 && s1 <= e2) || (s2 >= s1 && s2 <= e1);
         //  return start2.getTime() >= end1.getTime() || end2.getTime() >= start1.getTime() || (start2.getTime() >= start1.getTime() && end2.getTime() <=end1.getTime());
     }

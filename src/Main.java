@@ -140,7 +140,6 @@ public class Main {
 								continue;
 							}
 							Theatre theatreChoice = ALL_THEATRES[movieLocation-1];	
-							System.out.println("Calling add Time Location");						
 							// make sure that we can add the movie 
 							if (!Admin.addTimeLocation(added, movieTime, theatreChoice)) {
 								// we failed so let's allow them to try again.
