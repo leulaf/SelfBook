@@ -329,7 +329,13 @@ public class Theatre {
 		// 		}
 		// 	}
 		// 	,1*3*1000);
-		ArrayList<Object> checkoutInfo = this.checkout();
+		ArrayList<Object> checkoutInfo = new ArrayList<Object>();
+		// check if they opted to select a seat 
+		if (seatsSelected.size() > 0)
+			checkoutInfo = this.checkout();
+		else 
+			return;
+
 		// timer.cancel();
 		if (checkoutInfo.get(0).equals(true)) {
 			// set all seats to taken 
