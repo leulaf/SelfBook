@@ -9,6 +9,7 @@ public class Theatre {
 	private Seat allSeats[][];
 	private int theatreNumber;
 	private int numSeatsAvailable;
+	private double moviePrice;
 
 	private HashMap<Time,Theatre> seatMap = new HashMap<Time,Theatre>();
 
@@ -48,8 +49,16 @@ public class Theatre {
 		return -1;
 	}
 
+	private void setMoviePrice(double price) {
+		this.moviePrice = price;
+	}
+	
+	private double getMoviePrice() {
+		return this.moviePrice;
+	}
+
 	public String toString() {
-		String s = "Theatre: " + this.theatreNumber + "\n";
+		String s = "Theatre " + this.theatreNumber + "\n";
 //		s += "Movie: " + this.movie + "\n";
 		// s += "Seats:\n";
 		return s;
@@ -123,9 +132,12 @@ public class Theatre {
 		return seatNum;
 	}
 
-	public void addShowTime(Time newTime) {
+	public void addShowTime(Time newTime, double price) {
 		int mapSize = this.seatMap.size() + 10;
-		this.seatMap.put(newTime, new Theatre(mapSize));
+		Theatre t = new Theatre(mapSize);
+		// set the movie price for admin purposes
+		t.setMoviePrice(price);
+		this.seatMap.put(newTime, t);
 	}
 
 	public Theatre findShowTime(Time time) {
@@ -315,12 +327,16 @@ public class Theatre {
 		ArrayList<Object> checkoutInfo = this.checkout();
 		// timer.cancel();
 		if (checkoutInfo.get(0).equals(true)) {
+			// set all seats to taken 
 			for (int i = 0; i < seatsSelected.size(); i++) {
 				seatsSelected.get(i).setStatus(Seat.TAKEN);
 				this.numSeatsAvailable += 1;
 			}
+			// now increment the number of tickets sold and the total revenue 
+			Admin.incrementNumTickets(seatsSelected.size());
+			Admin.incrementTotalRevenue(seatsSelected.size()*this.getMoviePrice());
 		} else {
-			// the user quit 
+			// the user quit - set all seats to open
 			for (int i = 0; i < seatsSelected.size(); i++) {
 				seatsSelected.get(i).setStatus(Seat.OPEN);
 				this.numSeatsAvailable += 1;
@@ -330,8 +346,11 @@ public class Theatre {
 	}
 
 	public void runCheckout(Time showTime) {
+		// set the movie price for the purpose of incrementing 
+		
 		// get the proper sub theatre 
 		Theatre t = this.seatMap.get(showTime);
+
 		// run the theatre UI to select seats and checkout 
 		t.runTheatreUI();
 		// show the seats they selected again

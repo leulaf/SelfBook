@@ -8,6 +8,9 @@ public class Admin extends User {
 		super(firstName, lastName, email);
 		super.isAdmin = true;
 	}
+
+	static int numberOfTicketsSold;
+	static double totalRevenue;
 	
 	static int adminCode = 12345;
 	
@@ -17,26 +20,20 @@ public class Admin extends User {
 		adminCode = code;
 	}
     
-	public static int getNumTicketsSold() {
-		// gets the number of tickets sold for all movies and all times 
-		int numSold = 0;
-		for (int i = 0; i < movies.size(); i++) {
-			Movie currMovie = movies.get(i);
-			// go through all the show times
-			for (Map.Entry<Time,Theatre> entry : currMovie.timeLocation.entrySet()) {
-				Theatre theatre = entry.getValue();
-				Theatre subTheatre = theatre.findShowTime(entry.getKey());
-				if (!subTheatre.equals(Theatre.nullTheatre()))
-					numSold += (Theatre.TOTAL_NUM_SEATS - subTheatre.getNumberSeatsAvailable());
-			}
-		}
-		return numSold;
+	public static void incrementNumTickets(int amount) {
+		numberOfTicketsSold += amount;
 	}
 
-	public static int getTotalRevenue() {
-		int numSold = getNumTicketsSold();
-		// this needs to be updated!!!
-		return numSold * 10;
+	public static void incrementTotalRevenue(double amount) {
+		totalRevenue += amount;
+	}
+
+	public static int getNumTicketsSold() {
+		return numberOfTicketsSold;
+	}
+
+	public static double getTotalRevenue() {
+		return totalRevenue;
 	}
 
 	public static Movie addMovie(String name, double price) {
@@ -84,9 +81,7 @@ public class Admin extends User {
 				Theatre currTheatre = entry.getValue();
 				if (currTheatre.equals(location)) {
 					// now we need to check for time overlap
-					System.out.println("Checking for an overlap with " + currMovie);
 					boolean hasOverlap = timeGiven.checkOverlap(currTime);
-					System.out.println("The overlap check returned: " + hasOverlap);
 					if (hasOverlap) {
 						System.out.println("Time conflict in " + currTheatre + "Please choose a different time!");
 						return false;
@@ -96,7 +91,7 @@ public class Admin extends User {
 		}
 		// if we reach here, we have succeeded
 		System.out.println("Successfully added " + movie + " in Theatre " + location.getNumber() + " in time slot " + time);
-		location.addShowTime(timeGiven);
+		location.addShowTime(timeGiven, movie.getPrice());
 		movie.timeLocation.put(timeGiven, location);
 		return true;
 	}
