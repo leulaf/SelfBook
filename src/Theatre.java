@@ -11,7 +11,7 @@ public class Theatre {
 	private int numSeatsAvailable;
 	private double moviePrice;
 
-	private HashMap<Time,Theatre> seatMap = new HashMap<Time,Theatre>();
+	private HashMap<Time,Seat> seatMap = new HashMap<Time,Theatre>();
 
 	static Scanner inputObj = new Scanner(System.in);
 

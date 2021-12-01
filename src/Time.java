@@ -57,13 +57,14 @@ public class Time {
     }
 
     boolean simpleOverlap(String start1, String end1, String start2, String end2) {
+        // parse the times into minutes
         int s1 = Integer.parseInt(start1.split(":")[0])*60 + Integer.parseInt(start1.split(":")[1]);
         int e1 = Integer.parseInt(end1.split(":")[0])*60 + Integer.parseInt(end1.split(":")[1]);
         int s2 = Integer.parseInt(start2.split(":")[0])*60 + Integer.parseInt(start2.split(":")[1]);
         int e2 = Integer.parseInt(end2.split(":")[0])*60 + Integer.parseInt(end2.split(":")[1]);
 
+        // overlap check!
         return (s2 >= s1 && s2 <= e1) || (e2 >= s1 && e2 <= e1) || (s1 >= s2 && s1 <= e2) || (s2 >= s1 && s2 <= e1);
-        //  return start2.getTime() >= end1.getTime() || end2.getTime() >= start1.getTime() || (start2.getTime() >= start1.getTime() && end2.getTime() <=end1.getTime());
     }
 
     public boolean checkOverlap(Time otherTime) {
@@ -148,35 +149,8 @@ public class Time {
         else 
             otherEndTime24 += ":" + startTimeMins + ":00";
         
-        // otherEndTime24 = "01/01/1970 " + otherEndTime24;
+        return this.simpleOverlap(thisStartTime24, thisEndTime24, otherStartTime24, otherEndTime24);
 
-        // now let's make a datetime object from it 
-        // Date otherStartEpoch;
-        // Date otherEndEpoch;
-        // Date thisStartEpoch;
-        // Date thisEndEpoch;
-        try {
-            // System.out.println(thisStartTime24);
-            // System.out.println(thisEndTime24);
-            // System.out.println(otherStartTime24);
-            // System.out.println(otherEndTime24);
-            // SimpleDateFormat epochFormat = new java.text.SimpleDateFormat("HH:mm:ss");
-
-            // thisStartEpoch = epochFormat.parse(thisStartTime24);
-            // thisEndEpoch = epochFormat.parse(thisEndTime24);     
-
-            // otherStartEpoch = epochFormat.parse(otherStartTime24);
-            // otherEndEpoch = epochFormat.parse(otherEndTime24);
-
-            // System.out.println("Movie 1: " + thisStartEpoch + "-" + thisEndEpoch);
-            // System.out.println("Movie 2: " + otherStartEpoch + "-" + otherEndEpoch);
-
-            return this.simpleOverlap(thisStartTime24, thisEndTime24, otherStartTime24, otherEndTime24);
-            // return this.simpleOverlap(thisStartEpoch, thisEndEpoch, otherStartEpoch, otherEndEpoch);
-        } catch (Exception e) {
-            System.out.println("Date overlap failed with exception: " + e);
-            return false;
-        }
     }
 
     private boolean validateTimeGiven() {
@@ -196,21 +170,7 @@ public class Time {
             System.out.println("Minutes cannot be less than 0 or more than 59. Please try again.");
             return false;
         }
-
-        // commenting this out for now because it is not a needed feature 
-        // step 2 check that the time slot is valid (i.e. there's no 12pm - 10am)
-        // boolean startMorning = this.getStartMorning();
-        // boolean endMorning = this.getEndMorning(); 
-        // if (startMorning == endMorning) {
-        //     // the time stamps are in the same zone, so now we just need to check that end is greater than start
-        //     if (endHours > startHours) {
-        //         return true;
-        //     } else if (endHours == startHours) {
-        //         return (endMinutes > startMinutes);
-        //     } else {
-        //         return true; 
-        //     }
-        // } 
+        
         return true;        
     }
 

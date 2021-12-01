@@ -33,10 +33,7 @@ public class Receipt {
         s += "Total Paid "+ this.totalPaid;
         s += "   ---------    ";
 
-        return s;
-
-
-        
+        return s;        
     }
 
 
