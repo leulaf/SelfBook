@@ -202,7 +202,7 @@ public class Main {
 								// parse their input
 								showtimeSelected = input.nextLine();
 								showtimeSelectedInt = Integer.parseInt(showtimeSelected);
-								if (wantRemoved.timeLocation.size()-1 <= showtimeSelectedInt-1) {
+								if (wantRemoved.timeLocation.size()-1 < showtimeSelectedInt-1) {
 									System.out.println("That showtime doesn't exist, please try again!");
 									continue;
 								}
