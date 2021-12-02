@@ -104,6 +104,7 @@ public class Theatre {
 		int index;
 		int[] seatNum = new int[2];
 
+		System.out.println("Attention: to quit you must select a row and column first - then, press 0 at any time");
 		while (true) {
 			// get the row desired
 			System.out.println("Please select a row: ");
@@ -159,14 +160,25 @@ public class Theatre {
 		int numberOfSeats;
 		String input = "";
 
+		// show them the seats available
+		System.out.println("Here are the seats available: ");
+		this.displaySeats();
+		// allow them to choose the number of seats they want
 		while (true) {
 			try {
 				System.out.println("Please enter the number of seats you would like: ");
-				// System.out.print("the token: " + inputObj.next());
 				input = inputObj.next();
 				numberOfSeats = Integer.parseInt(input);
+
+				// check for a quit 
+				if (this.checkInputForQuit(input)) {
+					Main.main(null);
+				}	
 				if (numberOfSeats > this.numSeatsAvailable) {
 					System.out.println("Not enough seats available. Please enter another number.");
+					continue;
+				} else if (numberOfSeats < 0) {
+					System.out.println("Invalid number of seats. Please try again!");
 					continue;
 				}
 				break;
@@ -175,6 +187,7 @@ public class Theatre {
 			}
 		}
 		
+		// now loop through the number of seats selected to choose a seat for each instance
 		for (int i = 0; i < numberOfSeats; i++) {
 			do {
 				this.displaySeats();
@@ -191,19 +204,20 @@ public class Theatre {
 			this.numSeatsAvailable -= 1;
 			seatsSelected.add(seatSelected);
 		}
+		// show them that their seat is being held 
 		this.displaySeats();
 
 		return seatsSelected;
 	}
 
 	private boolean checkInputForQuit(String input) {
-		if (input.equals("q")) 
+		// System.out.println("the token: " + input);
+		if (input.equals("0")) 
 			return true; 
 		return false;
 	}
 
 	private ArrayList<Object> checkout() {
-		
 		Long number; 
 		int month;
 		int year;
@@ -292,12 +306,12 @@ public class Theatre {
 		return new ArrayList<Object>(Arrays.asList(true, number, month, year, cvv));
 	}
 
-	private void runTheatreUI() {
+	private void runTheatreUI(Movie movieChosen) {
 		// initialize an array of seats selected
 		ArrayList<Seat> seatsSelected = new ArrayList<Seat>();
 		// validate that these seats are not currently held
 		seatsSelected = this.validateSeat();
-		this.startTimer(seatsSelected);
+		this.processCheckout(movieChosen, seatsSelected);
 	}
 	
 	// private void expiredCheckout() {
@@ -319,16 +333,8 @@ public class Theatre {
 	// 	}
 	// }
 
-	private void startTimer(ArrayList<Seat> seatsSelected) {
-		// Timer timer = new Timer();
-		// timer.schedule(
-		// 	new TimerTask() {
-		// 		public void run() {
-		// 			expiredCheckout();
-		// 			return;
-		// 		}
-		// 	}
-		// 	,1*3*1000);
+	private void processCheckout(Movie movieChosen, ArrayList<Seat> seatsSelected) {
+
 		ArrayList<Object> checkoutInfo = new ArrayList<Object>();
 		// check if they opted to select a seat 
 		if (seatsSelected.size() > 0)
@@ -336,36 +342,38 @@ public class Theatre {
 		else 
 			return;
 
-		// timer.cancel();
 		if (checkoutInfo.get(0).equals(true)) {
-			// set all seats to taken 
+			// set all seats selected to taken 
 			for (int i = 0; i < seatsSelected.size(); i++) {
 				seatsSelected.get(i).setStatus(Seat.TAKEN);
-				this.numSeatsAvailable += 1;
+				this.numSeatsAvailable -= 1;
 			}
 			// now increment the number of tickets sold and the total revenue 
 			Admin.incrementNumTickets(seatsSelected.size());
 			Admin.incrementTotalRevenue(seatsSelected.size()*this.getMoviePrice());
+		
+			// now give them a receipt
+			Receipt r = new Receipt(movieChosen, seatsSelected, seatsSelected.size(), this.getNumber());
+			System.out.println("Here is your receipt!");
+			System.out.println(r);
 		} else {
-			// the user quit - set all seats to open
+			// the user quit - set all seats selected to open
 			for (int i = 0; i < seatsSelected.size(); i++) {
 				seatsSelected.get(i).setStatus(Seat.OPEN);
 				this.numSeatsAvailable += 1;
 			}
 		}
+
 		return;	
 	}
 
-	public void runCheckout(Time showTime) {		
+	public void runCheckout(Time showTime, Movie movieChosen) {		
 		// get the proper sub theatre 
 		Theatre t = this.seatMap.get(showTime);
 
 		// run the theatre UI to select seats and checkout 
-		t.runTheatreUI();
-
-		// show the seats they selected again
-		t.displaySeats();
-		// now we have to send them a receipt 
+		t.runTheatreUI(movieChosen);
+		
 
 		// send them back to main 
 		Main.main(null);

@@ -25,13 +25,13 @@ public class Receipt {
         s += "   Receipt   \n";
         s += "Date: " + java.time.LocalDate.now() + "\n"; 
         s += "Movie Name: " + this.movieName + "\n"; 
-        s += "Theater Number:" + this.theaterNumber + "\n";
-        s += "Seat Numbers: " ;
+        s += "Theater Number: " + this.theaterNumber + "\n";
+        s += "Seat Numbers: \n" ;
         for (Seat seat : this.seats)
             s+= seat + " ";
         s += "\n";
         s += "Total Paid "+ this.totalPaid;
-        s += "   ---------    ";
+        s += "\n----------------";
 
         return s;        
     }

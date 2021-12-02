@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.spi.CurrencyNameProvider;
 
 public class Admin extends User {
 	static Movie Ex1;
@@ -38,6 +39,15 @@ public class Admin extends User {
 
 	public static Movie addMovie(String name, double price) {
 		Movie movie = new Movie(name, price);
+		// let's check if the movie already exists 
+		for (int i = 0; i < movies.size(); i++) {
+			Movie currMovie = movies.get(i);
+			if (movie.checkName(currMovie)) {
+				if (movie.getPrice() != currMovie.getPrice())
+					System.out.println("This movie already exists, and is priced at " + currMovie.getPrice() + ". We have kept the original price. If you want to change this, please use option 3 in the admin menu.");
+				return currMovie;
+			}
+		}
 		movies.add(movie);
 		return movie;
 	}
@@ -76,6 +86,8 @@ public class Admin extends User {
 		// now we need to go through the movies in that location to make sure there is no overlap
 		for (int i = 0; i < movies.size(); i++) {
 			Movie currMovie = movies.get(i);
+
+			// check for overlaps 
 			for (Map.Entry<Time, Theatre> entry : currMovie.timeLocation.entrySet()) {
 				Time currTime = entry.getKey();
 				Theatre currTheatre = entry.getValue();
@@ -89,6 +101,8 @@ public class Admin extends User {
 				} 
 			}
 		}
+
+
 		// if we reach here, we have succeeded
 		System.out.println("Successfully added " + movie + " in Theatre " + location.getNumber() + " in time slot " + time);
 		location.addShowTime(timeGiven, movie.getPrice());
@@ -113,7 +127,7 @@ public class Admin extends User {
 		addMovie("Dune",15);
 		addMovie("Martian",15);
 		addMovie("Avengers",15);
-		
+
 		addTimeLocation(movies.get(0),"11:00AM-12:00PM",Main.ALL_THEATRES[0]);
 		addTimeLocation(movies.get(0),"12:00PM-02:00PM",Main.ALL_THEATRES[1]);
 		

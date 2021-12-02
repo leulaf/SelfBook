@@ -327,7 +327,7 @@ public class Main {
 				}else if(timeChoice > 0 && (timeChoice-1 <= Admin.movies.get(movieChoice - 1).timeLocation.size() - 1)) {
 					// timeChoise now corresponds to a time and a theatre -> let's get that entry in our hashmap 
 					Map.Entry<Time, Theatre> showTimeChosen = Admin.movies.get(movieChoice - 1).getShowTimeFromIndex(timeChoice-1);
-					showTimeChosen.getValue().runCheckout(showTimeChosen.getKey());
+					showTimeChosen.getValue().runCheckout(showTimeChosen.getKey(), Admin.movies.get(movieChoice - 1));
 					break;
 				}else {
 					System.out.println("Input was incorrect, please try again");

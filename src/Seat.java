@@ -44,7 +44,7 @@ public class Seat {
 	}
 	
 	public String toString() {
-		String s = "Seat Number: " + this.row + this.col + "\n";
+		String s = this.row + this.col + "\n";
 		return s;
 	}
 

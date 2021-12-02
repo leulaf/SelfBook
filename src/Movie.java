@@ -14,6 +14,10 @@ public class Movie {
         this.tickets = Theatre.TOTAL_NUM_SEATS;
     }
 
+    public boolean checkName(Movie otherMovie) {
+        return (this.name.replaceAll(" ", "").toLowerCase().equals(otherMovie.getName().replaceAll(" ", "").toLowerCase()));
+    }
+
     public String getName(){
         return this.name;
     }
