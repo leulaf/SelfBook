@@ -26,6 +26,7 @@ public class Receipt {
         s += "Date: " + java.time.LocalDate.now() + "\n"; 
         s += "Movie Name: " + this.movieName + "\n"; 
         s += "Theater Number: " + this.theaterNumber + "\n";
+        s += "Number of Seats Purchased: " + this.numSeats + "\n";
         s += "Seat Numbers: \n" ;
         for (Seat seat : this.seats)
             s+= seat + " ";

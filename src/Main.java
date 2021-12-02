@@ -66,7 +66,6 @@ public class Main {
 					continue;
 				}
 				
-				System.out.println();
 				if(movieChoice == 0){
 					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 					
@@ -79,7 +78,7 @@ public class Main {
 					System.out.println("3. Change price");
 					System.out.println("4. View total Tickets sold and money collected");
 					System.out.println("5. Set or change Admin passcode\n");
-					System.out.println("Pick one of the above options by entering the corresponding number:");
+					System.out.println("Pick one of the above options by entering the corresponding number or press 0 to quit at anytime:");
 					while(true) {
 						try {
 							adminChoice = Integer.parseInt(input.nextLine());
@@ -87,35 +86,33 @@ public class Main {
 							System.out.println("Input was incorrect, please try again");
 							continue;
 						}
-						if(!(adminChoice <= 5 && adminChoice > 0)) {
+						if(!(adminChoice <= 5 && adminChoice >= 0)) {
 							continue;
 						}
 						break;
 					}
+
 					if(adminChoice == 0) {
-						Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
+						// Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 						main(null);
 					}else if(adminChoice == 1) {
 						// int numTickets;
 						double price;
 						System.out.println("Enter the name of the Movie you want to add:");
 						String movieName = input.nextLine();
+
+						// check for quit 
+						if (movieName.equals("0"))
+							main(null);
 						
-						// Commenting out for now - num seats is set by the theatre class 
-						// while(true) {
-						// 	System.out.println("Enter the number of tickets available for " + movieName);
-						// 	try {
-						// 		numTickets = Integer.parseInt(input.nextLine());
-						// 	} catch (NumberFormatException e) {
-						// 		System.out.println("Input was incorrect, please try again");
-						// 		continue;
-						// 	}
-						// 	break;
-						// }
 						while(true) {	
 							System.out.println("Enter How much the tickets for " + movieName + " should cost");
 							try {
 								price = Double.parseDouble(input.nextLine());
+								// check for a quit
+								if (price == 0)
+									main(null);
+								
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
@@ -130,9 +127,17 @@ public class Main {
 							int movieLocation;
 							System.out.println("Enter when the showing time of " + movieName + " will be (EX: 12:00PM-02:00PM)");
 							String movieTime = input.nextLine();
+							// check for quit
+							if (movieTime.equals("0"))
+								main(null);
+
 							System.out.println("Enter where the location the showing for " + movieName + " will be (Choose: 1-10)");
 							try {
 								movieLocation = Integer.parseInt(input.nextLine());
+								// check for quit 
+								if (movieLocation == 0) 
+									main(null);
+
 								if (movieLocation < 1 || movieLocation > 10) 
 									System.out.println("Please enter a valid theatre number.");
 							} catch (NumberFormatException e) {
@@ -148,6 +153,11 @@ public class Main {
 
 							System.out.println("Enter 'yes' if you want to add another time and location otherwise enter 'no'");
 							String anotherTime = input.nextLine();
+
+							// check for quit 
+							if (anotherTime.equals("0")) 
+								main(null);
+
 							while(true) {
 								if(anotherTime.toLowerCase().equals("yes")) {
 									addOther = true;
@@ -181,6 +191,11 @@ public class Main {
 							System.out.println("Enter the corresponding number for the movie you want to remove:");
 							try {
 								removed = Integer.parseInt(input.nextLine());
+
+								// check for quit
+								if (removed == 0) {
+									main(null);
+								}
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
@@ -201,7 +216,9 @@ public class Main {
 							try {
 								// parse their input
 								showtimeSelected = input.nextLine();
+
 								showtimeSelectedInt = Integer.parseInt(showtimeSelected);
+
 								if (wantRemoved.timeLocation.size()-1 < showtimeSelectedInt-1) {
 									System.out.println("That showtime doesn't exist, please try again!");
 									continue;
@@ -249,6 +266,11 @@ public class Main {
 							System.out.println("Enter the corresponding number for the movie you want to change the price of:");
 							try {
 								changed = Integer.parseInt(input.nextLine());
+
+								// check for quit
+								if (changed == 0) 
+									main(null);
+
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
@@ -260,6 +282,11 @@ public class Main {
 							System.out.println("Enter the new ticket price for " + Admin.movies.get(changed-1).getName() + ":");
 							try {
 								newPrice = Double.parseDouble(input.nextLine());
+
+								// check for quit 
+								if (newPrice == 0) 
+									main(null);
+
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
@@ -285,6 +312,11 @@ public class Main {
 							System.out.println("Enter the new Admin passcode: (passcode be consist five-eight digit number)");
 							try {
 								changed = Integer.parseInt(input.nextLine());
+
+								// check for quit 
+								if (changed == 0) 
+									main(null);
+
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;

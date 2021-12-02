@@ -44,7 +44,7 @@ public class Seat {
 	}
 	
 	public String toString() {
-		String s = this.row + this.col + "\n";
+		String s = String.valueOf(this.row) + this.col + "\n";
 		return s;
 	}
 

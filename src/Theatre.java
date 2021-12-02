@@ -119,9 +119,8 @@ public class Theatre {
 			// get the col desired
 			try {
 				System.out.println("Please select a column: ");
-				inputObj.nextLine();
 				col = Integer.parseInt(inputObj.next());
-				if (col >= 0 && col <=9)
+				if (col >= 0 && col <=8)
 					break;
 				System.out.println("Please enter a valid column.");
 			} catch (NumberFormatException e) {
@@ -223,10 +222,15 @@ public class Theatre {
 		int year;
 		String cvv;
 		System.out.println("Welcome to checkout!");
+		// boolean ranOnce = false;
+		Scanner input = new Scanner(System.in);
+
 		while (true) {
 			System.out.print("Enter 16 digit credit card number. Use format (xxxx xxxx xxxx xxxx): ");
-			inputObj.nextLine();
-			String cardNumber = inputObj.nextLine();
+			// if (!ranOnce)
+			// 	inputObj.nextLine(); 
+			
+			String cardNumber = input.nextLine();
 
 			if (this.checkInputForQuit(cardNumber))
 				return new ArrayList<Object>(Arrays.asList(false, 0, 0, 0, 0));
@@ -234,7 +238,7 @@ public class Theatre {
 			cardNumber = cardNumber.replaceAll(" ", "");
 			if (cardNumber.length() != 16) {
 				System.out.println("Please enter a valid credit card number. The length was incorrect.");
-				continue;
+				continue; 
 			} 
 		
 			try {
@@ -245,11 +249,12 @@ public class Theatre {
 			}
 			break;
 		}
+
 		while (true) {
 			System.out.println("Enter month. Use format (xx): ");
 			String res;
 			try {
-				res = inputObj.next();
+				res = input.next();
 				if (this.checkInputForQuit(res))
 					return new ArrayList<Object>(Arrays.asList(false, 0, 0, 0, 0));
 				
@@ -268,7 +273,7 @@ public class Theatre {
 			System.out.println("Enter year. Use format (xxxx): ");
 			String res;
 			try {
-				res = inputObj.next();
+				res = input.next();
 				if (this.checkInputForQuit(res))
 					return new ArrayList<Object>(Arrays.asList(false, 0, 0, 0, 0));
 				
@@ -287,7 +292,7 @@ public class Theatre {
 		}
 		while (true) {
 			System.out.println("Enter cvv. Use format (xxx): ");
-			cvv = inputObj.next();
+			cvv = input.next();
 			if (this.checkInputForQuit(cvv))
 				return new ArrayList<Object>(Arrays.asList(false, 0, 0, 0, 0));
 				
@@ -303,6 +308,7 @@ public class Theatre {
 			}
 			break;
 		}
+
 		return new ArrayList<Object>(Arrays.asList(true, number, month, year, cvv));
 	}
 
