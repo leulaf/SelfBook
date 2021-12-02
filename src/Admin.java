@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.spi.CurrencyNameProvider;
 
 public class Admin extends User {
 	static Movie Ex1;
