@@ -68,6 +68,9 @@ public class Admin extends User {
 				break;
 			}
 		}
+		// now let's check if that was the only show time 
+		if (movieSelected.timeLocation.size() == 0)
+			movies.remove(movieSelected);
 	}
 	
 	public static boolean addTimeLocation(Movie movie, String time, Theatre location) {
