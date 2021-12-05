@@ -29,8 +29,7 @@ public class Receipt {
         s += "Number of Seats Purchased: " + this.numSeats + "\n";
         s += "Seat Numbers: \n" ;
         for (Seat seat : this.seats)
-            s+= seat + " ";
-        s += "\n";
+            s+= seat;
         s += "Total Paid "+ this.totalPaid;
         s += "\n----------------";
 
