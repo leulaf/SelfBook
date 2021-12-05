@@ -93,6 +93,7 @@ public class Main {
 							continue;
 						}
 						if(!(adminChoice <= 5 && adminChoice >= 0)) {
+							System.out.println("Input was incorrect, please try again");
 							continue;
 						}
 						break;
@@ -138,7 +139,9 @@ public class Main {
 							System.out.println("Enter when the showing time of " + movieName + " will be (EX: 12:00PM-02:00PM)");
 							String movieTime = input.nextLine();
 							// check for quit
-							if (movieTime.equals("0"))
+							if (movieTime.equals("0")) {
+								// need to remove the movie 
+								Admin.removeMovie(added);
 								main(null);
 							//ask for location
 							System.out.println("Enter where the location the showing for " + movieName + " will be (Choose: 1-10)");
@@ -146,8 +149,11 @@ public class Main {
 							try {
 								movieLocation = Integer.parseInt(input.nextLine());
 								// check for quit 
-								if (movieLocation == 0) 
+								if (movieLocation == 0) {
+									// need to remove the movie 
+									Admin.removeMovie(added);
 									main(null);
+								}
 
 								if (movieLocation < 1 || movieLocation > 10) 
 									System.out.println("Please enter a valid theatre number.");
