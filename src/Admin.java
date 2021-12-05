@@ -1,13 +1,10 @@
 import java.util.*;
 
-public class Admin extends User {
+public class Admin {
 	static Movie Ex1; //maybe delete this?
 	static Movie Ex2; //maybe delete this?
 	static Movie Ex3; //maybe delete this?
-	public Admin(String firstName, String lastName, String email) {
-		super(firstName, lastName, email); //maybe delete this? if deleting user class
-		super.isAdmin = true; //maybe delete this? if deleting user class
-	}
+	
 	//counts the number of tickets sold
 	static int numberOfTicketsSold;
 	//counts the total revenue
@@ -82,7 +79,7 @@ public class Admin extends User {
 		Time timeGiven = new Time();
 		boolean timeValid = timeGiven.parseTime(time);
 		if (!timeValid) {
-			// fail so return false
+			System.out.println("The time range entered was not valid. Please try again!");
 			return false;
 		}
 		
@@ -94,7 +91,6 @@ public class Admin extends User {
 			for (Map.Entry<Time, Theatre> entry : currMovie.timeLocation.entrySet()) {
 				Time currTime = entry.getKey();
 				Theatre currTheatre = entry.getValue();
-				// check that the movie is equal
 				if (currTheatre.equals(location)) {
 					// now we need to check for time overlap
 					boolean hasOverlap = timeGiven.checkOverlap(currTime);
