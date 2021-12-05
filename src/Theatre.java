@@ -355,7 +355,7 @@ public class Theatre {
 			}
 			// now increment the number of tickets sold and the total revenue 
 			Admin.incrementNumTickets(seatsSelected.size());
-			Admin.incrementTotalRevenue(seatsSelected.size()*this.getMoviePrice());
+			Admin.incrementTotalRevenue(seatsSelected.size()*movieChosen.getPrice());
 		
 			// now give them a receipt
 			Receipt r = new Receipt(movieChosen, seatsSelected, seatsSelected.size(), this.getNumber());
