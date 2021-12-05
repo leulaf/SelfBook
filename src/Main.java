@@ -309,6 +309,11 @@ public class Main {
 								if (changed == 0) 
 									main(null);
 
+								if (changed > Admin.movies.size() - 1) {
+									System.out.println("Invalid choice. Please try again!");
+									continue;
+								}
+
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
