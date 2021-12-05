@@ -119,6 +119,12 @@ public class Main {
 								// check for a quit
 								if (price == 0)
 									main(null);
+
+								// check for a negative input 
+								if (price < 0) {
+									System.out.println("Price cannot be negative! Please try again");
+									continue;
+								}
 								
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
