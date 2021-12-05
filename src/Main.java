@@ -44,7 +44,7 @@ public class Main {
 			int movieChoice;
 			int timeChoice;
 			
-			String[] times; //maybe delete this?
+			String[] times;
 			
 			//print the movies in theater now
 			System.out.println("Movies in Theater Now:");
@@ -69,9 +69,7 @@ public class Main {
 					continue;
 				}
 				//if entered 0 quit the program
-				if(movieChoice == 0){
-					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3); //maybe delete this?
-					
+				if(movieChoice == 0){					
 					main(null);
 				} 
 				//if entered admincode, print admin options
@@ -200,6 +198,7 @@ public class Main {
 						Main.showAllTheatres();
 						main(null);
 					}
+				}
 					// remove movie intructions printed
 					else if(adminChoice == 2) {
 						int removed;
@@ -393,7 +392,6 @@ public class Main {
 				System.out.println();
 				//check for quit
 				if(timeChoice == 0){
-					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3); //maybe delete this?
 					main(null);
 				}else if(timeChoice > 0 && (timeChoice-1 <= Admin.movies.get(movieChoice - 1).timeLocation.size() - 1)) {
 					// timeChoise now corresponds to a time and a theatre -> let's get that entry in our hashmap 

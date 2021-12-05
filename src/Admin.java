@@ -1,12 +1,9 @@
 import java.util.*;
 
-public class Admin extends User {
-	static Movie Ex1; //maybe delete this?
-	static Movie Ex2; //maybe delete this?
-	static Movie Ex3; //maybe delete this?
-	public Admin(String firstName, String lastName, String email) {
-		super(firstName, lastName, email); //maybe delete this? if deleting user class
-		super.isAdmin = true; //maybe delete this? if deleting user class
+public class Admin {
+	
+	public Admin() {
+		// admin is a bunch of static attributes and methods, so we don't really need to initialize 
 	}
 	//counts the number of tickets sold
 	static int numberOfTicketsSold;

@@ -233,8 +233,8 @@ public class Theatre {
 		int year;
 		String cvv;
 		System.out.println("Welcome to checkout!");
-		// boolean ranOnce = false;
-		Scanner input = new Scanner(System.in); //maybe delete this? (don't delete this but can we close it? I didn't want to close it bc we had bugs with scanners, just wanted to make sure this is not one of them)
+
+		Scanner input = new Scanner(System.in); 
 		
 		//user enters credit card num
 		while (true) {
@@ -316,7 +316,7 @@ public class Theatre {
 				continue;
 			}
 			try {
-				int check = Integer.valueOf(cvv);  //maybe delete this?
+				int check = Integer.valueOf(cvv); 
 			} catch (Exception e) {
 				System.out.println("Please enter a valid cvv");
 				continue;
