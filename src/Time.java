@@ -10,6 +10,7 @@ public class Time {
     private boolean startMorning;
     private boolean endMorning;
 
+    //creates a time. used to set the start and end time of a movie
     public Time() {
         // initialize the attributes we need 
         this.startTimeHours = 0;
@@ -19,43 +20,44 @@ public class Time {
         this.startMorning = false;
         this.endMorning = false;
     }
-
+    //mutator method to set the start time of  a movie
     public void setStartTime(int hours, int minutes, boolean startMorning) {
         this.startTimeHours = hours;
         this.startTimeMinutes = minutes;
         this.startMorning = startMorning;
     }
-
+    //mutator method to set the end time of  a movie
     public void setEndTime(int hours, int minutes, boolean startMorning) {
         this.endTimeHours = hours;
         this.endTimeMinutes = minutes;
         this.endMorning = startMorning;
     }
-
+    //accessor method that returns the first part of the start time ex: time = 12:30, returns 12
     public int getStartTimeHours() {
         return this.startTimeHours;
     }
-
+    //accessor method that returns the first part of the end time ex: time = 12:30, returns 12
     public int getEndTimeHours(){
         return this.endTimeHours;
     }
-
+    //accessor method that returns the second part of the start time ex: time = 12:30, returns 30
     public int getStartTimeMinutes(){
         return this.startTimeMinutes;
     }
-
+    //accessor method that returns the second part of the end time ex: time = 12:30, returns 30
     public int getEndTimeMinutes(){
         return this.endTimeMinutes;
     }
-
+    //return true if movie starts at AM time, false if PM time
     public boolean getStartMorning() {
         return this.startMorning;
     }
-
+    //return true if movie ends at AM time, false if PM time
     public boolean getEndMorning() {
         return this.endMorning;
     }
 
+    //takes in two start and end times and returns true if they overlap
     boolean simpleOverlap(String start1, String end1, String start2, String end2) {
         // parse the times into minutes
         int s1 = Integer.parseInt(start1.split(":")[0])*60 + Integer.parseInt(start1.split(":")[1]);
@@ -67,16 +69,13 @@ public class Time {
         return (s2 >= s1 && s2 <= e1) || (e2 >= s1 && e2 <= e1) || (s1 >= s2 && s1 <= e2) || (s2 >= s1 && s2 <= e1);
     }
 
+    //parses this time object and the time object passed to a 24 hr format then checks if they overlap and returns true if there is an overlap
     public boolean checkOverlap(Time otherTime) {
-        // checks if there is an overlap between this object's time 
-        // and the object passed 
-        // if this is true, then they overlap
-        // if this is false, then they are valid
-
         // as long as the date and month are the same, we can set constraints 
         // we need to parse this into a 24 hour format first 
         String thisStartTime24 = "";
         if (this.getStartMorning())
+            //special case for 12 because it needs to be 00 in 24 hr format
             if (this.getStartTimeHours() == 12)
                 thisStartTime24 += "00";
             else 
@@ -88,12 +87,13 @@ public class Time {
                 thisStartTime24 += this.getStartTimeHours();
 
         int startTimeMins = this.getStartTimeMinutes();
+        //special case when mins < 10, we need a 0 at the beginning
         if (startTimeMins < 10)
             thisStartTime24 += ":" + "0" + startTimeMins + ":00";
         else 
             thisStartTime24 += ":" + startTimeMins + ":00";
         
-
+        //repeating the process for end times
         String thisEndTime24 = "";
         if (this.getEndMorning())
             if (this.getEndTimeHours() == 12)
@@ -113,6 +113,7 @@ public class Time {
         else 
             thisEndTime24 += ":" + startTimeMins + ":00";
         
+        //getting the 24 hr format time for the time object passed
         String otherStartTime24 = "";
         if (otherTime.getStartMorning())
             if (otherTime.getStartTimeHours() == 12)
@@ -130,7 +131,8 @@ public class Time {
             otherStartTime24 += ":" + "0" + startTimeMins + ":00";
         else 
             otherStartTime24 += ":" + startTimeMins + ":00";
-        
+
+        //repeating the process for end times
         String otherEndTime24 = "";
         if (otherTime.getEndMorning()) 
             if (otherTime.getEndTimeHours() == 12)
@@ -148,15 +150,13 @@ public class Time {
             otherEndTime24 += ":" + "0" + startTimeMins + ":00";
         else 
             otherEndTime24 += ":" + startTimeMins + ":00";
-        
+        //now that we have evrything in 24 hr format, pass the start and end times to simpleoverlap to check if they overlap
         return this.simpleOverlap(thisStartTime24, thisEndTime24, otherStartTime24, otherEndTime24);
 
     }
-
+    // checks if the times given are valid, if the time slot is valid 
     private boolean validateTimeGiven() {
-        // checks if the times given are valid and if the time slot is valid 
-
-        // step 1 check the start time and end time  to make sure it's less than 12
+        // check the start time hours and end time hours to make sure it's between 1-12
         int startHours = this.getStartTimeHours();
         int endHours = this.getEndTimeHours();
 
@@ -164,6 +164,8 @@ public class Time {
             System.out.println("Hours cannot be less than 1 or more than 12. Please try again.");
             return false;
         }
+
+        // check the start time minutes and end time minutes to make sure it's between 0-59
         int startMinutes = this.getStartTimeMinutes();
         int endMinutes = this.getEndTimeMinutes();
         if (startMinutes > 59 || startMinutes < 0 || endMinutes > 59 || endMinutes < 0) {
@@ -173,11 +175,10 @@ public class Time {
         
         return true;        
     }
-
+    // parse the timeGiven and make sure it's valid 
+    // return true if success, false if there's a conflict or an invalid entry 
     public boolean parseTime(String timeGiven) { 
-        // parse the timeGiven and make sure it's valid 
         // adjust each attribute to the timeGiven 
-        // return true if success, false if there's a conflict or an invalid entry 
         timeGiven = timeGiven.toLowerCase();
         timeGiven = timeGiven.replace(" ", "");
         Pattern time = Pattern.compile("[0-9][0-9]:[0-9][0-9][ap][m][-][0-9][0-9]:[0-9][0-9][ap][m]");
@@ -193,10 +194,10 @@ public class Time {
 
         hours = Character.getNumericValue(timeGiven.charAt(0)) * 10 + Character.getNumericValue(timeGiven.charAt(1));
         minutes  = Character.getNumericValue(timeGiven.charAt(3)) * 10 + Character.getNumericValue(timeGiven.charAt(4));
-
+        //since timeGiven is parsed, can easily check the time zone (AM/PM)
         if (timeGiven.charAt(5) == 'p')
             timeZoneMorning = false;
-        
+        //set start time
         this.setStartTime(hours, minutes, timeZoneMorning);
 
         hours = Character.getNumericValue(timeGiven.charAt(8)) * 10 + Character.getNumericValue(timeGiven.charAt(9));
@@ -206,13 +207,13 @@ public class Time {
             timeZoneMorning = false;
         else 
             timeZoneMorning = true;
-        
+        //set end time
         this.setEndTime(hours, minutes, timeZoneMorning);
 
         // now we need to make sure that the time given was valid 
         return this.validateTimeGiven();
     }
-
+    //used to print an easy to read time
     public String toString() {
         String s = "";
         int startTimeMins = this.getStartTimeMinutes();

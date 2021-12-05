@@ -7,9 +7,10 @@ public class Main {
 	// all the theatres in the movie theatre 
 	public static final Theatre[] ALL_THEATRES = { new Theatre(1), new Theatre(2), new Theatre(3), new Theatre(4), new Theatre(5), new Theatre(6), new Theatre(7), new Theatre(8), new Theatre(9), new Theatre(10) };
 	
-	//remove later
-	static boolean ranOnce = false;
+	
+	static boolean ranOnce = false; 
 
+	//prints all the theaters, the movies played in the theatre and the show time
 	static void showAllTheatres() {
 		// shows admin all theatre movie + time combinations currently showing 
 		System.out.println("Here are all the current showtimes!");
@@ -33,7 +34,6 @@ public class Main {
 		}
 	}
 
-	//remove Admin.movies.clear(); statement later
 	public static void main(String[] args) {
 		
 		if (!ranOnce) {
@@ -43,11 +43,14 @@ public class Main {
 			
 			int movieChoice;
 			int timeChoice;
-			String[] times;
 			
+			String[] times; //maybe delete this?
+			
+			//print the movies in theater now
 			System.out.println("Movies in Theater Now:");
 			System.out.println();
-			
+
+			//iterate through the movies in movies array list
 			for(int i = 0; i < Admin.movies.size(); i++) {
 				System.out.println(
 						"////////////////////////////////////// \n//\t" +
@@ -58,19 +61,21 @@ public class Main {
 						+ "------------------------------------- PassCode - Admin Options");
 			
 			while(true) {
-				
+				//check if the input is correct
 				try {
 					movieChoice = Integer.parseInt(input.nextLine());
 				} catch (NumberFormatException e) {
 					System.out.println("Input was incorrect, please try again");
 					continue;
 				}
-				
+				//if entered 0 quit the program
 				if(movieChoice == 0){
-					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
+					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3); //maybe delete this?
 					
 					main(null);
-				} else if (Admin.adminCode == movieChoice) {
+				} 
+				//if entered admincode, print admin options
+				else if (Admin.adminCode == movieChoice) {
 					int adminChoice;
 					System.out.println("-----------------Admin Options-----------------");
 					System.out.println("1. Add Movies");
@@ -80,6 +85,7 @@ public class Main {
 					System.out.println("5. Set or change Admin passcode\n");
 					System.out.println("Pick one of the above options by entering the corresponding number or press 0 to quit at anytime:");
 					while(true) {
+						//check if the input is correct
 						try {
 							adminChoice = Integer.parseInt(input.nextLine());
 						} catch (NumberFormatException e) {
@@ -91,11 +97,12 @@ public class Main {
 						}
 						break;
 					}
-
+					//quitting program
 					if(adminChoice == 0) {
-						// Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
 						main(null);
-					}else if(adminChoice == 1) {
+					}
+					//add movie instructions printed
+					else if(adminChoice == 1) {
 						// int numTickets;
 						double price;
 						System.out.println("Enter the name of the Movie you want to add:");
@@ -107,6 +114,7 @@ public class Main {
 						
 						while(true) {	
 							System.out.println("Enter How much the tickets for " + movieName + " should cost");
+							//check if the input is correct
 							try {
 								price = Double.parseDouble(input.nextLine());
 								// check for a quit
@@ -119,19 +127,22 @@ public class Main {
 							}
 							break;
 						}
+						//add movie to the movies array list
 						Movie added = Admin.addMovie(movieName, price);
 						boolean addOther = true;
 						showAllTheatres();
 
 						while(addOther) {
 							int movieLocation;
+							//ask for show time
 							System.out.println("Enter when the showing time of " + movieName + " will be (EX: 12:00PM-02:00PM)");
 							String movieTime = input.nextLine();
 							// check for quit
 							if (movieTime.equals("0"))
 								main(null);
-
+							//ask for location
 							System.out.println("Enter where the location the showing for " + movieName + " will be (Choose: 1-10)");
+							//check if valid input
 							try {
 								movieLocation = Integer.parseInt(input.nextLine());
 								// check for quit 
@@ -169,19 +180,24 @@ public class Main {
 								}
 								break;
 							}
-							
+							//if not adding more movies, quit
 							if(!addOther) {
 								break;
 							}else {
 								continue;
 							}
 						}
+						//if here successfully added the movie
 						System.out.println("The movie " + movieName + " was sucessfully added along with it's price, number of tickets, times, and locations");
 						System.out.println("Here is the updated list of movies with their corresponding theatre and show time");		
+						//print updated list of the theaters, movies, show times
 						Main.showAllTheatres();
 						main(null);
-					}else if(adminChoice == 2) {
+					}
+					// remove movie intructions printed
+					else if(adminChoice == 2) {
 						int removed;
+						//print the curent movies
 						while(true){
 							for(int i = 0; i < Admin.movies.size(); i++) {
 								System.out.println(
@@ -189,6 +205,7 @@ public class Main {
 								(i+1) + " - " + Admin.movies.get(i).getName());
 							}
 							System.out.println("Enter the corresponding number for the movie you want to remove:");
+							//check if valid input
 							try {
 								removed = Integer.parseInt(input.nextLine());
 
@@ -210,9 +227,11 @@ public class Main {
 						String showtimeSelected = "";
 						int showtimeSelectedInt = 0;
 						boolean clearAllTimes = false;
+						//ask which show time to remove
 						while(true){
 							wantRemoved.printTimeAndLocation();
 							System.out.println("Please select the show time you want removed, or enter A to clear all showtimes.");
+							//check if valid input
 							try {
 								// parse their input
 								showtimeSelected = input.nextLine();
@@ -244,18 +263,23 @@ public class Main {
 						} else {
 							Movie movieSelected = Admin.movies.get(removed-1);
 							Map.Entry<Time, Theatre> correspondingShowTime = movieSelected.getShowTimeFromIndex(showtimeSelectedInt-1); 
+							//if show time does not exist
 							if (correspondingShowTime.getKey() == null) {
 								System.out.println("We couldn't find that showtime! Sending you back to the main menu.");
 								main(null);
 							}
+							//remove show time
 							Admin.removeShowtimeForMovie(movieSelected, correspondingShowTime.getKey(), correspondingShowTime.getValue());
 							System.out.println("The movie " + movieSelected + " at " + correspondingShowTime.getKey() + " in " + correspondingShowTime.getValue() + " has been removed.");
 						}
 						main(null);
 						
-					}else if(adminChoice == 3) {
+					}
+					//change price instructions printed
+					else if(adminChoice == 3) {
 						int changed;
 						Double newPrice;
+						//print all movies
 						for(int i = 0; i < Admin.movies.size(); i++) {
 							System.out.println(
 									"////////////////////////////////////// \n//\t" +
@@ -264,6 +288,7 @@ public class Main {
 						
 						while(true) {	
 							System.out.println("Enter the corresponding number for the movie you want to change the price of:");
+							//check if valid input
 							try {
 								changed = Integer.parseInt(input.nextLine());
 
@@ -277,9 +302,10 @@ public class Main {
 							}
 							break;
 						}
-						
+						//ask for the new ticket price
 						while(true) {	
 							System.out.println("Enter the new ticket price for " + Admin.movies.get(changed-1).getName() + ":");
+							//check for valid input
 							try {
 								newPrice = Double.parseDouble(input.nextLine());
 
@@ -293,12 +319,14 @@ public class Main {
 							}
 							break;
 						}
-						
+						//update price
 						Admin.updatePrice(Admin.movies.get(changed-1), newPrice);
-						
+						//print the new ticket price
 						System.out.println("The new ticket price for " + Admin.movies.get(changed-1).getName() + " has been changed to " + Admin.movies.get(changed-1).getPrice());
 						main(null);
-					}else if(adminChoice == 4) {
+					}
+					//print num tickets sold, money collected
+					else if(adminChoice == 4) {
 						System.out.println("----------------------------------------------");
 						System.out.println("-- Number of tickets sold: " + Admin.getNumTicketsSold());
 						System.out.println("----------------------------------------------");
@@ -306,10 +334,13 @@ public class Main {
 						System.out.println("----------------------------------------------");
 						main(null);
 
-					}else if(adminChoice == 5) {
+					}
+					//change passcode instructions printed
+					else if(adminChoice == 5) {
 						int changed;
 						while(true) {	
 							System.out.println("Enter the new Admin passcode: (passcode be consist five-eight digit number)");
+							//check if valid input
 							try {
 								changed = Integer.parseInt(input.nextLine());
 
@@ -325,12 +356,14 @@ public class Main {
 						}
 						
 						Admin.setAdminCode(changed);
-						
+						//print successfull message
 						System.out.println("The Admin passcode has been changed successfully");
 						main(null);
 					}
 					
-				}else if(movieChoice > 0 && movieChoice < Admin.movies.size()+1) {
+				}
+				//check if valid input, print showtimes for movie selected
+				else if(movieChoice > 0 && movieChoice < Admin.movies.size()+1) {
 					times = Admin.movies.get(movieChoice - 1).printTimeAndLocation();
 					break;
 				}else {
@@ -343,7 +376,7 @@ public class Main {
 			
 
 			while(true) {
-				
+				//check if valid input
 				try {
 					timeChoice = Integer.parseInt(input.nextLine());
 				} catch (NumberFormatException e) {
@@ -352,13 +385,14 @@ public class Main {
 				}
 				
 				System.out.println();
-				
+				//check for quit
 				if(timeChoice == 0){
-					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3);
+					Admin.movies.remove(Admin.Ex1);Admin.movies.remove(Admin.Ex2);Admin.movies.remove(Admin.Ex3); //maybe delete this?
 					main(null);
 				}else if(timeChoice > 0 && (timeChoice-1 <= Admin.movies.get(movieChoice - 1).timeLocation.size() - 1)) {
 					// timeChoise now corresponds to a time and a theatre -> let's get that entry in our hashmap 
 					Map.Entry<Time, Theatre> showTimeChosen = Admin.movies.get(movieChoice - 1).getShowTimeFromIndex(timeChoice-1);
+					//go to checkout
 					showTimeChosen.getValue().runCheckout(showTimeChosen.getKey(), Admin.movies.get(movieChoice - 1));
 					break;
 				}else {

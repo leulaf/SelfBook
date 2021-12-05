@@ -8,7 +8,7 @@ public class Receipt {
     private int theaterNumber;
     private String movieName;
 
-    
+    //creating a new reciept. called when chekout is successfull. 
     public Receipt(Movie movie, ArrayList<Seat> s, int numSeats, int theaterNum){
         this.totalPaid = movie.getPrice() * numSeats;
         this.movieName = movie.getName();

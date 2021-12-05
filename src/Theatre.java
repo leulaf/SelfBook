@@ -5,25 +5,27 @@ import java.util.Map;
 import java.util.Scanner;
 
 public class Theatre {
-	
+
 	private Seat allSeats[][];
 	private int theatreNumber;
 	private int numSeatsAvailable;
 	private double moviePrice;
-
+	//mapping the time and location of the movies in theater now
 	private HashMap<Time,Theatre> seatMap = new HashMap<Time,Theatre>();
 
 	static Scanner inputObj = new Scanner(System.in);
-
+	
 	public static final int ROWS = 9;
 	public static final int SEATS_PER_ROW = 11;
 	public static final int TOTAL_NUM_SEATS = ROWS*SEATS_PER_ROW;
 
 	public Theatre(int theatreNumber) {
+		//all theatres have set number of seats
 		this.numSeatsAvailable = TOTAL_NUM_SEATS;
 		this.theatreNumber = theatreNumber;
 		this.allSeats = new Seat[ROWS][SEATS_PER_ROW];
 		
+		//create new seats for all seats in 2d array
 		for (int i = 0; i < ROWS; i++) {
 			for (int j = 0; j < SEATS_PER_ROW; j++) {
 				this.allSeats[i][j] = new Seat(i, j);
@@ -31,15 +33,16 @@ public class Theatre {
 		}
 		
 	}
-
+	//creates a null, invalid theatre
 	public static Theatre nullTheatre() {
 		return new Theatre(-1);
 	}
-
+	//check if this instance of theatre is the same as the theatre passed
 	public boolean equals(Theatre theatre) {
 		return this.getNumber() == theatre.getNumber();
 	}
 
+	//returns the index of the row of the seat, return -1 if invalid row
 	private int indexOf(int row) {
 		for (int i = 0; i < ROWS; i++) {
 			if (Seat.ROW_HASH[i] == row) {
@@ -48,30 +51,31 @@ public class Theatre {
 		}
 		return -1;
 	}
-
+	//mutator method to set the price of the movie
 	private void setMoviePrice(double price) {
 		this.moviePrice = price;
 	}
 	
+	//accessor method which returns the price of the movie
 	private double getMoviePrice() {
 		return this.moviePrice;
 	}
 
+	//printing an easy to read theatre
 	public String toString() {
 		String s = "Theatre " + this.theatreNumber + "\n";
-//		s += "Movie: " + this.movie + "\n";
-		// s += "Seats:\n";
 		return s;
 	}
-
+	//accessor method that returns the theatre number
 	public int getNumber() {
 		return this.theatreNumber;
 	} 
-
+	//returns the number of available seats
 	public int getNumberSeatsAvailable() {
 		return this.numSeatsAvailable;
 	}
-	
+	//prints the seating chart in the theatre. 
+	// X if taken, - if onhold ( about to checkout), empty otherwise
 	public void displaySeats() {
 		System.out.println("     -- SCREEN --\n");
 		
@@ -97,19 +101,21 @@ public class Theatre {
 		}
 		System.out.println(seats);
 	}
-
+	//user selects seat 
+	//returns seat number as an int array, first val is row and second val is col
 	private int[] selectSeat() {
 		char row;
 		int col;
 		int index;
 		int[] seatNum = new int[2];
-
+		//there is a 0 row, column so can't quit here
 		System.out.println("Attention: to quit you must select a row and column first - then, press 0 at any time");
 		while (true) {
 			// get the row desired
 			System.out.println("Please select a row: ");
 			row = inputObj.next().charAt(0);
 			index = this.indexOf(row);
+			//check if valid input
 			if (index != -1)
 				break;
 			System.out.println("Please enter a valid row.");
@@ -120,6 +126,7 @@ public class Theatre {
 			try {
 				System.out.println("Please select a column: ");
 				col = Integer.parseInt(inputObj.next());
+				//check if valid input
 				if (col >= 0 && col <=8)
 					break;
 				System.out.println("Please enter a valid column.");
@@ -132,7 +139,7 @@ public class Theatre {
 		seatNum[1] = col;
 		return seatNum;
 	}
-
+	//adding a new show time
 	public void addShowTime(Time newTime, double price) {
 		int mapSize = this.seatMap.size() + 10;
 		Theatre t = new Theatre(mapSize);
@@ -140,7 +147,7 @@ public class Theatre {
 		t.setMoviePrice(price);
 		this.seatMap.put(newTime, t);
 	}
-
+	// returns the movie at the given showtime, returns a null theatre if no movie at that time
 	public Theatre findShowTime(Time time) {
 		for (Map.Entry<Time,Theatre> entry : seatMap.entrySet()) {
 			if (time.equals(entry.getKey())) 
@@ -148,7 +155,7 @@ public class Theatre {
 		}
 		return Theatre.nullTheatre();
 	}
-
+	//asks user for the seat info, returns an array list of seats selected by the user 
 	private ArrayList<Seat> validateSeat() {
 		
 		int[] rowCol;
@@ -172,11 +179,14 @@ public class Theatre {
 				// check for a quit 
 				if (this.checkInputForQuit(input)) {
 					Main.main(null);
-				}	
+				}
+				//user wants too many seats	
 				if (numberOfSeats > this.numSeatsAvailable) {
 					System.out.println("Not enough seats available. Please enter another number.");
 					continue;
-				} else if (numberOfSeats < 0) {
+				} 
+				//user wants invalid seats
+				else if (numberOfSeats < 0) {
 					System.out.println("Invalid number of seats. Please try again!");
 					continue;
 				}
@@ -208,14 +218,15 @@ public class Theatre {
 
 		return seatsSelected;
 	}
-
+	// checks if the user wants to quit the program
 	private boolean checkInputForQuit(String input) {
 		// System.out.println("the token: " + input);
 		if (input.equals("0")) 
 			return true; 
 		return false;
 	}
-
+	//user puts checkout info
+	//returns true and credit card info if successfull, false and 0s if unsuccessfull
 	private ArrayList<Object> checkout() {
 		Long number; 
 		int month;
@@ -223,12 +234,11 @@ public class Theatre {
 		String cvv;
 		System.out.println("Welcome to checkout!");
 		// boolean ranOnce = false;
-		Scanner input = new Scanner(System.in);
-
+		Scanner input = new Scanner(System.in); //maybe delete this? (don't delete this but can we close it? I didn't want to close it bc we had bugs with scanners, just wanted to make sure this is not one of them)
+		
+		//user enters credit card num
 		while (true) {
 			System.out.print("Enter 16 digit credit card number. Use format (xxxx xxxx xxxx xxxx): ");
-			// if (!ranOnce)
-			// 	inputObj.nextLine(); 
 			
 			String cardNumber = input.nextLine();
 
@@ -236,11 +246,12 @@ public class Theatre {
 				return new ArrayList<Object>(Arrays.asList(false, 0, 0, 0, 0));
 
 			cardNumber = cardNumber.replaceAll(" ", "");
+			//check if valid input
 			if (cardNumber.length() != 16) {
 				System.out.println("Please enter a valid credit card number. The length was incorrect.");
 				continue; 
 			} 
-		
+			//check if valid input
 			try {
 				number = Long.valueOf(cardNumber);
 			} catch (Exception e) {
@@ -249,10 +260,11 @@ public class Theatre {
 			}
 			break;
 		}
-
+		//user enters the expiration month
 		while (true) {
 			System.out.println("Enter month. Use format (xx): ");
 			String res;
+			//check if valid input
 			try {
 				res = input.next();
 				if (this.checkInputForQuit(res))
@@ -269,9 +281,11 @@ public class Theatre {
 
 			}
 		}
+		//user enters expiration year
 		while (true) {
 			System.out.println("Enter year. Use format (xxxx): ");
 			String res;
+			//check if valid input
 			try {
 				res = input.next();
 				if (this.checkInputForQuit(res))
@@ -290,6 +304,7 @@ public class Theatre {
 				System.out.println("Please enter a valid year, or 0 if you want to quit");
 			}
 		}
+		//user enters cvv
 		while (true) {
 			System.out.println("Enter cvv. Use format (xxx): ");
 			cvv = input.next();
@@ -301,7 +316,7 @@ public class Theatre {
 				continue;
 			}
 			try {
-				int check = Integer.valueOf(cvv);
+				int check = Integer.valueOf(cvv);  //maybe delete this?
 			} catch (Exception e) {
 				System.out.println("Please enter a valid cvv");
 				continue;
@@ -311,7 +326,7 @@ public class Theatre {
 
 		return new ArrayList<Object>(Arrays.asList(true, number, month, year, cvv));
 	}
-
+	//initalize and validate seats
 	private void runTheatreUI(Movie movieChosen) {
 		// initialize an array of seats selected
 		ArrayList<Seat> seatsSelected = new ArrayList<Seat>();
@@ -320,25 +335,9 @@ public class Theatre {
 		this.processCheckout(movieChosen, seatsSelected);
 	}
 	
-	// private void expiredCheckout() {
-	// 	Scanner inputObj = new Scanner(System.in);
-	// 	while (true) {
-	// 		System.out.println("Your session has expired!");
-	// 		System.out.println("If you want to start over, press 1"); 
-	// 		System.out.println("If you want to cancel, press q");
-	// 		String input = inputObj.next();
-	// 		System.out.println("made it here");
-	// 		if (input.equals("q"))
-	// 			return;
-	// 		else if (input.equals("1")) {
-	// 			this.runTheatreUI();
-	// 			break;
-	// 		} else {
-	// 			System.out.println("Please enter valid choice!");
-	// 		}
-	// 	}
-	// }
-
+	//user checks out seats, issue receipt
+	//update the theatre when a user purchases seats.
+	//update num tickets sold and the revenue
 	private void processCheckout(Movie movieChosen, ArrayList<Seat> seatsSelected) {
 
 		ArrayList<Object> checkoutInfo = new ArrayList<Object>();
@@ -372,7 +371,7 @@ public class Theatre {
 
 		return;	
 	}
-
+	//wrapper method starting the seat selection and checkout process.
 	public void runCheckout(Time showTime, Movie movieChosen) {		
 		// get the proper sub theatre 
 		Theatre t = this.seatMap.get(showTime);
