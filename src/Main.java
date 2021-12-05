@@ -155,7 +155,7 @@ public class Main {
 								}
 
 								if (movieLocation < 1 || movieLocation > 10) {
-									System.out.println("Please enter a valid theatre number.");
+									System.out.println("Invalid theatre! Sending you back to choose a new time and theatre.");
 									continue;
 								}
 							} catch (NumberFormatException e) {
