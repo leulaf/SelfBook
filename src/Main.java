@@ -141,7 +141,8 @@ public class Main {
 								// need to remove the movie 
 								Admin.removeMovie(added);
 								main(null);
-							//ask for location
+							}
+
 							System.out.println("Enter where the location the showing for " + movieName + " will be (Choose: 1-10)");
 							//check if valid input
 							try {
