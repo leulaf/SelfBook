@@ -79,7 +79,7 @@ public class Admin {
 		Time timeGiven = new Time();
 		boolean timeValid = timeGiven.parseTime(time);
 		if (!timeValid) {
-			System.out.println("The time range entered was not valid. Please try again!");
+			// fail so return false
 			return false;
 		}
 		
@@ -91,6 +91,7 @@ public class Admin {
 			for (Map.Entry<Time, Theatre> entry : currMovie.timeLocation.entrySet()) {
 				Time currTime = entry.getKey();
 				Theatre currTheatre = entry.getValue();
+				// check that the movie is equal
 				if (currTheatre.equals(location)) {
 					// now we need to check for time overlap
 					boolean hasOverlap = timeGiven.checkOverlap(currTime);
