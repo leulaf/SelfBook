@@ -154,8 +154,10 @@ public class Main {
 									main(null);
 								}
 
-								if (movieLocation < 1 || movieLocation > 10) 
+								if (movieLocation < 1 || movieLocation > 10) {
 									System.out.println("Please enter a valid theatre number.");
+									continue;
+								}
 							} catch (NumberFormatException e) {
 								System.out.println("Input was incorrect, please try again");
 								continue;
@@ -199,7 +201,6 @@ public class Main {
 						Main.showAllTheatres();
 						main(null);
 					}
-				}
 					// remove movie intructions printed
 					else if(adminChoice == 2) {
 						int removed;
