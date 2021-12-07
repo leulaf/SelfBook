@@ -1,6 +1,7 @@
 # SelfBook
 
 ##### Table of Contents  
+- [Running the program](#running-the-program)
 - [Admin Guide](#admin-guide)
     - [Accessing the system](#accessing-the-system)
     - [Adding a movie](#adding-a-movie)
@@ -12,6 +13,10 @@
     - [Selecting a movie](#selecting-a-movie)
     - [Selecting a showtime](#selecting-a-showtime)
     - [Checkout](#checkout)
+
+
+## Running the program 
+To run the program, run the "Main.java" file. 
 
 ## Admin Guide 
 
