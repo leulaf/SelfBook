@@ -1,4 +1,4 @@
-# SelfBook
+# SelfBook-CS411
 
 ##### Table of Contents  
 - [Running the program](#running-the-program)
