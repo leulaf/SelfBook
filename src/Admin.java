@@ -12,13 +12,13 @@ public class Admin {
 	//default admin passcode
 	static int adminCode = 12345;
 	//hold all the movies played in the theater now
-    static ArrayList<Movie> movies = new ArrayList<Movie>();
+	static ArrayList<Movie> movies = new ArrayList<Movie>();
     
 	//admin can change the password when this method is called
-    public static void setAdminCode(int code) {
+	public static void setAdminCode(int code) {
 		adminCode = code;
 	}
-    //counts the number of ti
+	//counts the number of ti
 	public static void incrementNumTickets(int amount) {
 		numberOfTicketsSold += amount;
 	}
@@ -82,7 +82,7 @@ public class Admin {
 			// fail so return false
 			return false;
 		}
-		
+
 		// now we need to go through the movies in that location to make sure there is no overlap
 		for (int i = 0; i < movies.size(); i++) {
 			Movie currMovie = movies.get(i);
@@ -113,7 +113,7 @@ public class Admin {
 	//updates the price of an existing movie
 	public static void updatePrice(Movie movie, Double newPrice){
 		movie.price = Math.round(newPrice*100.0)/100.0;;
-    }
+	}
     
     
 	static boolean ranOnce = false;
