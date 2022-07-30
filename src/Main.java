@@ -39,7 +39,7 @@ public class Main {
 			Admin.main();
 			ranOnce = true;
 		}
-			
+
 		int movieChoice;
 		int timeChoice;
 
@@ -416,7 +416,7 @@ public class Main {
 				continue;
 			}
 		}
-			
+
 	}
 
 }
