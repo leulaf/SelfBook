@@ -35,9 +35,5 @@ public class Receipt {
 
         return s;        
     }
-
-
-    
-
     
 }
