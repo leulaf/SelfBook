@@ -119,7 +119,7 @@ public class Admin {
 	static boolean ranOnce = false;
 
 	public static void main() {
-		// let's add some movies to kickstart the program
+		// lets add some movies to kickstart the program
 		addMovie("Dune",15);
 		addMovie("Martian",15);
 		addMovie("Avengers",15);
